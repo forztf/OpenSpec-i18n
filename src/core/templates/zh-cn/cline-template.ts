@@ -1,1 +1,0 @@
-export { agentsRootStubTemplateZh as clineTemplate } from './agents-root-stub.js';
