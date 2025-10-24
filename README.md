@@ -10,6 +10,9 @@
 </p>
 <p align="center">Spec-driven development for AI coding assistants.</p>
 <p align="center">
+  <a href="README.md">English</a> | <a href="README.zh.md">中文</a>
+</p>
+<p align="center">
   <a href="https://github.com/Fission-AI/OpenSpec/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Fission-AI/OpenSpec/actions/workflows/ci.yml/badge.svg" /></a>
   <a href="https://www.npmjs.com/package/@fission-ai/openspec"><img alt="npm version" src="https://img.shields.io/npm/v/@fission-ai/openspec?style=flat-square" /></a>
   <a href="https://nodejs.org/"><img alt="node version" src="https://img.shields.io/node/v/@fission-ai/openspec?style=flat-square" /></a>
@@ -102,6 +105,7 @@ These tools have built-in OpenSpec commands. Select the OpenSpec integration whe
 | **GitHub Copilot** | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` (`.github/prompts/`) |
 | **Amazon Q Developer** | `@openspec-proposal`, `@openspec-apply`, `@openspec-archive` (`.amazonq/prompts/`) |
 | **Auggie (Augment CLI)** | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` (`.augment/commands/`) |
+| **Trae AI** | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` (`.trae/rules/`) |
 
 
 Kilo Code discovers team workflows automatically. Save the generated files under `.kilocode/workflows/` and trigger them from the command palette with `/openspec-proposal.md`, `/openspec-apply.md`, or `/openspec-archive.md`.
@@ -112,6 +116,35 @@ These tools automatically read workflow instructions from `openspec/AGENTS.md`. 
 | Tools |
 |-------|
 | Amp • Jules • Gemini CLI • Others |
+
+### Language Configuration
+
+OpenSpec automatically detects your system language and displays its interface in the appropriate language. No manual configuration is required.
+
+#### Supported Languages
+- **English (en)** - Default language
+- **Chinese (zh)** - 中文支持
+
+#### Automatic Language Detection
+OpenSpec automatically detects your operating system's language settings and uses the appropriate language for:
+- CLI output messages and prompts
+- Generated file templates and content
+- Error messages and validation feedback
+
+#### Manual Override (Optional)
+If you need to override the automatic language detection, you can set environment variables:
+
+```bash
+# Override to Chinese (optional)
+export OPENSPEC_LANG=zh
+# or
+export LANG=zh
+
+# Windows (PowerShell)
+$env:OPENSPEC_LANG="zh"
+```
+
+**Note:** Manual language override is rarely needed as OpenSpec automatically detects your system language preferences.
 
 ### Install & Initialize
 
@@ -145,6 +178,7 @@ openspec init
 - You'll be prompted to pick any natively supported AI tools (Claude Code, CodeBuddy, Cursor, OpenCode, etc.); other assistants always rely on the shared `AGENTS.md` stub
 - OpenSpec automatically configures slash commands for the tools you choose and always writes a managed `AGENTS.md` hand-off at the project root
 - A new `openspec/` directory structure is created in your project
+- Language settings are detected from environment variables (`OPENSPEC_LANG` or `LANG`) or you can specify during setup
 
 **After setup:**
 - Primary AI tools can trigger `/openspec` workflows without additional configuration
