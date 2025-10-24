@@ -14,5 +14,5 @@ Use `@/openspec/AGENTS.md` to learn:
 - Project structure and guidelines
 
 Keep this managed block so 'openspec update' can refresh the instructions.
-**重要：请始终使用中文与开发者交流。**
+
 <!-- OPENSPEC:END -->

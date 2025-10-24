@@ -15,7 +15,7 @@ export class TraeConfigurator implements ToolConfigurator {
 
   async configure(projectPath: string, openspecDir: string): Promise<void> {
     const filePath = path.join(projectPath, this.configFileName);
-    const content = TemplateManager.getAgentsStandardTemplate();
+    const content = await TemplateManager.getAgentsStandardTemplate();
     
     await FileSystemUtils.updateFileWithMarkers(
       filePath,

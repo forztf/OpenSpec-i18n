@@ -1,0 +1,21 @@
+---
+description: Implement an approved OpenSpec change and keep tasks in sync.
+auto_execution_mode: 3
+---
+<!-- OPENSPEC:START -->
+**防护措施**
+- 首先采用直接、最小的实现，只有在明确需要时才添加复杂性。
+- 保持变更范围紧密围绕请求的结果。
+- 如果需要额外的 OpenSpec 约定或澄清，请参考 `openspec/AGENTS.md`（位于 `openspec/` 目录中——如果看不到，请运行 `ls openspec` 或 `openspec update`）。
+
+**步骤**
+按顺序跟踪这些步骤并逐一完成。
+1. 阅读 `changes/<id>/proposal.md`、`design.md`（如果存在）和 `tasks.md` 以确认范围和验收标准。
+2. 按顺序处理任务，保持编辑最小化并专注于请求的变更。
+3. 在更新状态之前确认完成——确保 `tasks.md` 中的每个项目都已完成。
+4. 在所有工作完成后更新清单，使每个任务标记为 `- [x]` 并反映实际情况。
+5. 当需要额外上下文时，参考 `openspec list` 或 `openspec show <item>`。
+
+**参考**
+- 如果在实施过程中需要提案的额外上下文，请使用 `openspec show <id> --json --deltas-only`。
+<!-- OPENSPEC:END -->

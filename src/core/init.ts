@@ -23,6 +23,7 @@ import {
   AIToolOption,
 } from './config.js';
 import { PALETTE } from './styles/palette.js';
+import { t, initI18n } from './i18n/index.js';
 
 const PROGRESS_SPINNER = {
   interval: 80,
@@ -294,27 +295,27 @@ const toolSelectionWizard = createPrompt<string[], ToolWizardConfig>(
 
     if (step === 'intro') {
       const introHeadline = config.extendMode
-        ? 'Extend your OpenSpec tooling'
-        : 'Configure your OpenSpec tooling';
+        ? t('init:wizard.intro.headline')
+        : t('init:wizard.intro.headline');
       const introBody = config.extendMode
-        ? 'We detected an existing setup. We will help you refresh or add integrations.'
-        : "Let's get your AI assistants connected so they understand OpenSpec.";
+        ? t('init:wizard.intro.body.extend')
+        : t('init:wizard.intro.body.new');
 
       lines.push(PALETTE.white(introHeadline));
       lines.push(PALETTE.midGray(introBody));
       lines.push('');
-      lines.push(PALETTE.midGray('Press Enter to continue.'));
+      lines.push(PALETTE.midGray(t('init:wizard.intro.continue')));
     } else if (step === 'select') {
       lines.push(PALETTE.white(config.baseMessage));
       lines.push(
         PALETTE.midGray(
-          'Use ↑/↓ to move · Space to toggle · Enter selects highlighted tool and reviews.'
+          t('init:wizard.select.instructions')
         )
       );
       lines.push('');
       lines.push(page);
       lines.push('');
-      lines.push(PALETTE.midGray('Selected configuration:'));
+      lines.push(PALETTE.midGray(t('init:wizard.select.configuration')));
       if (rootStubSelected && rootStubChoice) {
         lines.push(
           `  ${PALETTE.white('-')} ${formatSummaryLabel(rootStubChoice)}`
@@ -322,7 +323,7 @@ const toolSelectionWizard = createPrompt<string[], ToolWizardConfig>(
       }
       if (selectedNativeChoices.length === 0) {
         lines.push(
-          `  ${PALETTE.midGray('- No natively supported providers selected')}`
+          `  ${PALETTE.midGray(t('init:wizard.select.noProviders'))}`
         );
       } else {
         selectedNativeChoices.forEach((choice) => {
@@ -332,9 +333,9 @@ const toolSelectionWizard = createPrompt<string[], ToolWizardConfig>(
         });
       }
     } else {
-      lines.push(PALETTE.white('Review selections'));
+      lines.push(PALETTE.white(t('init:wizard.review.title')));
       lines.push(
-        PALETTE.midGray('Press Enter to confirm or Backspace to adjust.')
+        PALETTE.midGray(t('init:wizard.review.instructions'))
       );
       lines.push('');
 
@@ -347,7 +348,7 @@ const toolSelectionWizard = createPrompt<string[], ToolWizardConfig>(
       if (selectedNativeChoices.length === 0) {
         lines.push(
           PALETTE.midGray(
-            'No natively supported providers selected. Universal instructions will still be applied.'
+            t('init:wizard.review.noProviders')
           )
         );
       } else {
@@ -560,8 +561,8 @@ export class InitCommand {
     const availableTools = AI_TOOLS.filter((tool) => tool.available);
 
     const baseMessage = extendMode
-      ? 'Which natively supported AI tools would you like to add or refresh?'
-      : 'Which natively supported AI tools do you use?';
+      ? t('init:prompt.baseMessage.extend')
+      : t('init:prompt.baseMessage.new');
     const initialNativeSelection = extendMode
       ? availableTools
           .filter((tool) => existingTools[tool.value])
@@ -575,8 +576,7 @@ export class InitCommand {
         kind: 'heading',
         value: '__heading-native__',
         label: {
-          primary:
-            'Natively supported providers (✔ OpenSpec custom slash commands available)',
+          primary: t('init:prompt.headings.native'),
         },
         selectable: false,
       },
@@ -601,8 +601,7 @@ export class InitCommand {
         kind: 'heading',
         value: OTHER_TOOLS_HEADING_VALUE,
         label: {
-          primary:
-            'Other tools (use Universal AGENTS.md for Amp, VS Code, GitHub Copilot, …)',
+          primary: t('init:prompt.headings.other'),
         },
         selectable: false,
       },
@@ -610,8 +609,8 @@ export class InitCommand {
         kind: 'option',
         value: ROOT_STUB_CHOICE_VALUE,
         label: {
-          primary: 'Universal AGENTS.md',
-          annotation: 'always available',
+          primary: t('init:prompt.options.universal.primary'),
+          annotation: t('init:prompt.options.universal.annotation'),
         },
         configured: extendMode,
         selectable: true,
@@ -746,41 +745,41 @@ export class InitCommand {
   ): void {
     console.log(); // Empty line for spacing
     const successHeadline = extendMode
-      ? 'OpenSpec tool configuration updated!'
-      : 'OpenSpec initialized successfully!';
+      ? t('init:success.headline.extend')
+      : t('init:success.headline.new');
     ora().succeed(PALETTE.white(successHeadline));
 
     console.log();
-    console.log(PALETTE.lightGray('Tool summary:'));
+    console.log(PALETTE.lightGray(t('init:success.summary')));
     const summaryLines = [
       rootStubStatus === 'created'
         ? `${PALETTE.white('▌')} ${PALETTE.white(
-            'Root AGENTS.md stub created for other assistants'
+            t('init:success.rootStub.created')
           )}`
         : null,
       rootStubStatus === 'updated'
         ? `${PALETTE.lightGray('▌')} ${PALETTE.lightGray(
-            'Root AGENTS.md stub refreshed for other assistants'
+            t('init:success.rootStub.updated')
           )}`
         : null,
       created.length
         ? `${PALETTE.white('▌')} ${PALETTE.white(
-            'Created:'
+            t('init:success.tools.created')
           )} ${this.formatToolNames(created)}`
         : null,
       refreshed.length
         ? `${PALETTE.lightGray('▌')} ${PALETTE.lightGray(
-            'Refreshed:'
+            t('init:success.tools.refreshed')
           )} ${this.formatToolNames(refreshed)}`
         : null,
       skippedExisting.length
         ? `${PALETTE.midGray('▌')} ${PALETTE.midGray(
-            'Skipped (already configured):'
+            t('init:success.tools.skippedExisting')
           )} ${this.formatToolNames(skippedExisting)}`
         : null,
       skipped.length
         ? `${PALETTE.darkGray('▌')} ${PALETTE.darkGray(
-            'Skipped:'
+            t('init:success.tools.skipped')
           )} ${this.formatToolNames(skipped)}`
         : null,
     ].filter((line): line is string => Boolean(line));
@@ -791,7 +790,7 @@ export class InitCommand {
     console.log();
     console.log(
       PALETTE.midGray(
-        'Use `openspec update` to refresh shared OpenSpec instructions in the future.'
+        t('init:success.updateHint')
       )
     );
 
@@ -799,38 +798,38 @@ export class InitCommand {
     const toolName = this.formatToolNames(selectedTools);
 
     console.log();
-    console.log(`Next steps - Copy these prompts to ${toolName}:`);
+    console.log(t('init:success.nextSteps', { toolName }));
     console.log(
       chalk.gray('────────────────────────────────────────────────────────────')
     );
-    console.log(PALETTE.white('1. Populate your project context:'));
+    console.log(PALETTE.white(t('init:success.steps.populateContext')));
     console.log(
       PALETTE.lightGray(
-        '   "Please read openspec/project.md and help me fill it out'
+        t('init:success.steps.populateContextPrompt1')
       )
     );
     console.log(
       PALETTE.lightGray(
-        '    with details about my project, tech stack, and conventions"\n'
+        t('init:success.steps.populateContextPrompt2')
       )
     );
-    console.log(PALETTE.white('2. Create your first change proposal:'));
+    console.log(PALETTE.white(t('init:success.steps.createProposal')));
     console.log(
       PALETTE.lightGray(
-        '   "I want to add [YOUR FEATURE HERE]. Please create an'
+        t('init:success.steps.createProposalPrompt1')
       )
     );
     console.log(
-      PALETTE.lightGray('    OpenSpec change proposal for this feature"\n')
+      PALETTE.lightGray(t('init:success.steps.createProposalPrompt2'))
     );
-    console.log(PALETTE.white('3. Learn the OpenSpec workflow:'));
+    console.log(PALETTE.white(t('init:success.steps.learnWorkflow')));
     console.log(
       PALETTE.lightGray(
-        '   "Please explain the OpenSpec workflow from openspec/AGENTS.md'
+        t('init:success.steps.learnWorkflowPrompt1')
       )
     );
     console.log(
-      PALETTE.lightGray('    and how I should work with you on this project"')
+      PALETTE.lightGray(t('init:success.steps.learnWorkflowPrompt2'))
     );
     console.log(
       PALETTE.darkGray(
@@ -841,9 +840,9 @@ export class InitCommand {
     // Codex heads-up: prompts installed globally
     const selectedToolIds = new Set(selectedTools.map((t) => t.value));
     if (selectedToolIds.has('codex')) {
-      console.log(PALETTE.white('Codex setup note'));
+      console.log(PALETTE.white(t('init:success.codex.title')));
       console.log(
-        PALETTE.midGray('Prompts installed to ~/.codex/prompts (or $CODEX_HOME/prompts).')
+        PALETTE.midGray(t('init:success.codex.note'))
       );
       console.log();
     }

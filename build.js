@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execFileSync } from 'child_process';
-import { existsSync, rmSync } from 'fs';
+import { existsSync, rmSync, cpSync } from 'fs';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
@@ -24,6 +24,16 @@ console.log('Compiling TypeScript...');
 try {
   runTsc(['--version']);
   runTsc();
+  
+  // Copy i18n translation files
+  console.log('Copying i18n translation files...');
+  if (existsSync('src/core/i18n/en')) {
+    cpSync('src/core/i18n/en', 'dist/core/i18n/en', { recursive: true });
+  }
+  if (existsSync('src/core/i18n/zh')) {
+    cpSync('src/core/i18n/zh', 'dist/core/i18n/zh', { recursive: true });
+  }
+  
   console.log('\n✅ Build completed successfully!');
 } catch (error) {
   console.error('\n❌ Build failed!');

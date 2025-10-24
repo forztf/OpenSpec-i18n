@@ -26,7 +26,7 @@ export abstract class SlashCommandConfigurator {
     const createdOrUpdated: string[] = [];
 
     for (const target of this.getTargets()) {
-      const body = this.getBody(target.id);
+      const body = await this.getBody(target.id);
       const filePath = FileSystemUtils.joinPath(projectPath, target.path);
 
       if (await FileSystemUtils.fileExists(filePath)) {
@@ -54,7 +54,7 @@ export abstract class SlashCommandConfigurator {
     for (const target of this.getTargets()) {
       const filePath = FileSystemUtils.joinPath(projectPath, target.path);
       if (await FileSystemUtils.fileExists(filePath)) {
-        const body = this.getBody(target.id);
+        const body = await this.getBody(target.id);
         await this.updateBody(filePath, body);
         updated.push(target.path);
       }

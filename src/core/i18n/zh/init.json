@@ -1,0 +1,87 @@
+{
+  "wizard": {
+    "intro": {
+      "headline": "欢迎使用 OpenSpec",
+      "body": {
+        "new": "让我们连接您的 AI 助手，以便它们了解 OpenSpec。",
+        "extend": "我们检测到现有设置。我们将帮助您刷新或添加集成。"
+      },
+      "continue": "按 Enter 键继续。"
+    },
+    "select": {
+      "instructions": "使用 ↑/↓ 移动 · 空格键切换 · Enter 键选择高亮工具并查看。",
+      "configuration": "已选择的配置：",
+      "noProviders": "- 未选择原生支持的提供商"
+    },
+    "review": {
+      "title": "查看选择",
+      "instructions": "按 Enter 键确认或 Backspace 键调整。",
+      "noProviders": "未选择原生支持的提供商。通用指令仍将应用。"
+    }
+  },
+  "prompt": {
+    "baseMessage": {
+      "new": "您想添加哪些原生支持的 AI 工具？",
+      "extend": "您想添加或刷新哪些原生支持的 AI 工具？"
+    },
+    "headings": {
+      "native": "原生支持的提供商（✔ 可用 OpenSpec 自定义斜杠命令）",
+      "other": "其他工具（使用通用 AGENTS.md 适用于 Amp、VS Code、GitHub Copilot 等）"
+    },
+    "options": {
+      "universal": {
+        "primary": "通用 AGENTS.md",
+        "annotation": "始终可用"
+      }
+    }
+  },
+  "success": {
+    "headline": {
+      "new": "🎉 OpenSpec 已成功初始化！",
+      "extend": "🎉 OpenSpec 配置已更新！"
+    },
+    "summary": "工具摘要：",
+    "rootStub": {
+      "created": "为其他助手创建了根 AGENTS.md 存根",
+      "updated": "为其他助手刷新了根 AGENTS.md 存根"
+    },
+    "tools": {
+      "created": "已创建：",
+      "refreshed": "已刷新：",
+      "skippedExisting": "已跳过（已配置）：",
+      "skipped": "已跳过："
+    },
+    "updateHint": "使用 `openspec update` 在将来刷新共享的 OpenSpec 指令。",
+    "nextSteps": "下一步 - 将这些提示复制到 {{toolName}}：",
+    "steps": {
+      "populateContext": "1. 填充您的项目上下文：",
+      "populateContextPrompt1": "请阅读 openspec/project.md 并帮助我填写项目详情、技术栈和约定",
+      "populateContextPrompt2": "请查看 openspec/project.md 并帮助我更新项目详情",
+      "createProposal": "2. 创建变更提案：",
+      "createProposalPrompt1": "我想添加 [您的功能]。请为此功能创建一个 OpenSpec 变更提案",
+      "createProposalPrompt2": "我想修改 [您的功能]。请为此变更创建一个 OpenSpec 提案",
+      "learnWorkflow": "3. 了解 OpenSpec 工作流程：",
+      "learnWorkflowPrompt1": "请解释 openspec/AGENTS.md 中的 OpenSpec 工作流程以及我应该如何在此项目上与您合作",
+      "learnWorkflowPrompt2": "请解释 OpenSpec 工作流程以及我们应该如何在此项目上合作"
+    },
+    "codex": {
+      "title": "Codex 设置说明",
+      "note": "提示已安装到 ~/.codex/prompts（或 $CODEX_HOME/prompts）。"
+    }
+  },
+  "spinner": {
+    "creating": "正在创建 OpenSpec 结构...",
+    "configuring": "正在配置 AI 工具..."
+  },
+  "status": {
+    "created": "OpenSpec 结构已创建",
+    "configured": "AI 工具已配置",
+    "alreadyInitialized": "ℹ OpenSpec 已初始化。跳过基础脚手架。"
+  },
+  "errors": {
+    "toolsRequired": "--tools 选项需要一个值。使用 \"all\"、\"none\" 或逗号分隔的工具 ID 列表。",
+    "toolsAtLeastOne": "当不使用 \"all\" 或 \"none\" 时，--tools 选项至少需要一个工具 ID。",
+    "toolsCannotCombine": "不能将保留值 \"all\" 或 \"none\" 与特定工具 ID 组合。",
+    "insufficientPermissions": "对 {{path}} 的写入权限不足"
+  }
+}

@@ -13,6 +13,7 @@ import { registerSpecCommand } from '../commands/spec.js';
 import { ChangeCommand } from '../commands/change.js';
 import { ValidateCommand } from '../commands/validate.js';
 import { ShowCommand } from '../commands/show.js';
+import { initI18n } from '../core/i18n/index.js';
 
 const program = new Command();
 const require = createRequire(import.meta.url);
@@ -25,13 +26,19 @@ program
 
 // Global options
 program.option('--no-color', 'Disable color output');
+program.option('--lang <lang>', 'Preferred language: en|zh');
 
 // Apply global flags before any command runs
-program.hook('preAction', (thisCommand) => {
+program.hook('preAction', async (thisCommand) => {
   const opts = thisCommand.opts();
   if (opts.noColor) {
     process.env.NO_COLOR = '1';
   }
+  // Language override for i18n
+  if (typeof (opts as any).lang === 'string') {
+    process.env.OPENSPEC_LANG = (opts as any).lang;
+  }
+  await initI18n(process.env.OPENSPEC_LANG);
 });
 
 const availableToolIds = AI_TOOLS.filter((tool) => tool.available).map((tool) => tool.value);
@@ -41,6 +48,7 @@ program
   .command('init [path]')
   .description('Initialize OpenSpec in your project')
   .option('--tools <tools>', toolsOptionDescription)
+  .option('--lang <lang>', 'Preferred language: en|zh')
   .action(async (targetPath = '.', options?: { tools?: string }) => {
     try {
       // Validate that the path is a valid directory
@@ -76,6 +84,7 @@ program
 program
   .command('update [path]')
   .description('Update OpenSpec instruction files')
+  .option('--lang <lang>', 'Preferred language: en|zh')
   .action(async (targetPath = '.') => {
     try {
       const resolvedPath = path.resolve(targetPath);

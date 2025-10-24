@@ -2,6 +2,8 @@
 
 Instructions for AI coding assistants using OpenSpec for spec-driven development.
 
+重要：在本仓库中对话默认使用中文进行交流。
+
 ## TL;DR Quick Checklist
 
 - Search existing work: `openspec spec list --long`, `openspec list` (use `rg` only for full-text search)
@@ -138,6 +140,11 @@ openspec/
 │   │       └── [capability]/
 │   │           └── spec.md # ADDED/MODIFIED/REMOVED
 │   └── archive/            # Completed changes
+
+├── i18n/                   # Internationalization resources
+│   ├── en/                 # English resources
+│   ├── zh/                 # Chinese resources
+│   └── index.ts            # i18next configuration and utilities
 ```
 
 ## Creating Change Proposals
@@ -269,7 +276,7 @@ Headers matched with `trim(header)` - whitespace ignored.
 - MODIFIED: Changes the behavior, scope, or acceptance criteria of an existing requirement. Always paste the full, updated requirement content (header + all scenarios). The archiver will replace the entire requirement with what you provide here; partial deltas will drop previous details.
 - RENAMED: Use when only the name changes. If you also change behavior, use RENAMED (name) plus MODIFIED (content) referencing the new name.
 
-Common pitfall: Using MODIFIED to add a new concern without including the previous text. This causes loss of detail at archive time. If you aren’t explicitly changing the existing requirement, add a new requirement under ADDED instead.
+Common pitfall: Using MODIFIED to add a new concern without including the previous text. This causes loss of detail at archive time. If you aren't explicitly changing the existing requirement, add a new requirement under ADDED instead.
 
 Authoring a MODIFIED requirement correctly:
 1) Locate the existing requirement in `openspec/specs/<capability>/spec.md`.
@@ -450,5 +457,13 @@ openspec show [item]       # View details
 openspec validate --strict # Is it correct?
 openspec archive <change-id> [--yes|-y]  # Mark complete (add --yes for automation)
 ```
+
+## Multi-language Support
+
+OpenSpec now supports multiple languages:
+- Default languages: English (en) and Chinese (zh)
+- Language detection: Automatic detection based on OS locale
+- Manual switching: Through command-line arguments or configuration files
+- Resource structure: JSON files organized by language and namespace
 
 Remember: Specs are truth. Changes are proposals. Keep them in sync.

@@ -58,7 +58,7 @@ $ARGUMENTS`,
   async generateAll(projectPath: string, _openspecDir: string): Promise<string[]> {
     const createdOrUpdated: string[] = [];
     for (const target of this.getTargets()) {
-      const body = TemplateManager.getSlashCommandBody(target.id).trim();
+      const body = (await TemplateManager.getSlashCommandBody(target.id)).trim();
       const promptsDir = this.getGlobalPromptsDir();
       const filePath = FileSystemUtils.joinPath(
         promptsDir,
@@ -91,7 +91,7 @@ $ARGUMENTS`,
         path.basename(target.path)
       );
       if (await FileSystemUtils.fileExists(filePath)) {
-        const body = TemplateManager.getSlashCommandBody(target.id).trim();
+        const body = (await TemplateManager.getSlashCommandBody(target.id)).trim();
         await this.updateFullFile(filePath, target.id, body);
         updated.push(target.path);
       }

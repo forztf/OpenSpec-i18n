@@ -1,0 +1,46 @@
+{
+  "title": "OpenSpec 指令",
+  "intro": "使用 OpenSpec 进行规范驱动开发的 AI 编码助手指令。",
+  "quickChecklist": {
+    "title": "快速检查清单",
+    "items": [
+      "搜索现有工作: `openspec spec list --long`, `openspec list` (仅使用 `rg` 进行全文搜索)",
+      "确定范围: 新功能 vs 修改现有功能",
+      "选择唯一的 `change-id`: kebab-case, 动词开头 (`add-`, `update-`, `remove-`, `refactor-`)",
+      "搭建框架: `proposal.md`, `tasks.md`, `design.md` (仅在需要时), 以及每个受影响功能的增量规范",
+      "编写增量: 使用 `## ADDED|MODIFIED|REMOVED|RENAMED Requirements`; 每个需求至少包含一个 `#### Scenario:`",
+      "验证: `openspec validate [change-id] --strict` 并修复问题",
+      "请求批准: 在提案获得批准之前不要开始实施"
+    ]
+  },
+  "workflow": {
+    "title": "三阶段工作流程",
+    "stage1": {
+      "title": "阶段 1: 创建变更",
+      "description": "在以下情况下创建提案:",
+      "triggers": [
+        "添加功能或特性",
+        "进行破坏性变更 (API, schema)",
+        "更改架构或模式",
+        "优化性能 (改变行为)",
+        "更新安全模式"
+      ]
+    },
+    "stage2": {
+      "title": "阶段 2: 实施变更",
+      "steps": [
+        "**阅读 proposal.md** - 了解要构建的内容",
+        "**阅读 design.md** (如果存在) - 审查技术决策",
+        "**阅读 tasks.md** - 获取实施清单",
+        "**按顺序实施任务** - 依次完成",
+        "**确认完成** - 确保 `tasks.md` 中的每个项目都已完成后再更新状态",
+        "**更新清单** - 所有工作完成后，将每个任务设置为 `- [x]` 以使清单反映实际情况",
+        "**批准门** - 在提案获得审查和批准之前不要开始实施"
+      ]
+    },
+    "stage3": {
+      "title": "阶段 3: 归档变更",
+      "description": "部署后，创建单独的 PR 来:"
+    }
+  }
+}

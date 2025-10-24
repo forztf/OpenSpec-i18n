@@ -1,0 +1,46 @@
+{
+  "title": "OpenSpec Instructions",
+  "intro": "Instructions for AI coding assistants using OpenSpec for spec-driven development.",
+  "quickChecklist": {
+    "title": "TL;DR Quick Checklist",
+    "items": [
+      "Search existing work: `openspec spec list --long`, `openspec list` (use `rg` only for full-text search)",
+      "Decide scope: new capability vs modify existing capability",
+      "Pick a unique `change-id`: kebab-case, verb-led (`add-`, `update-`, `remove-`, `refactor-`)",
+      "Scaffold: `proposal.md`, `tasks.md`, `design.md` (only if needed), and delta specs per affected capability",
+      "Write deltas: use `## ADDED|MODIFIED|REMOVED|RENAMED Requirements`; include at least one `#### Scenario:` per requirement",
+      "Validate: `openspec validate [change-id] --strict` and fix issues",
+      "Request approval: Do not start implementation until proposal is approved"
+    ]
+  },
+  "workflow": {
+    "title": "Three-Stage Workflow",
+    "stage1": {
+      "title": "Stage 1: Creating Changes",
+      "description": "Create proposal when you need to:",
+      "triggers": [
+        "Add features or functionality",
+        "Make breaking changes (API, schema)",
+        "Change architecture or patterns",
+        "Optimize performance (changes behavior)",
+        "Update security patterns"
+      ]
+    },
+    "stage2": {
+      "title": "Stage 2: Implementing Changes",
+      "steps": [
+        "**Read proposal.md** - Understand what's being built",
+        "**Read design.md** (if exists) - Review technical decisions",
+        "**Read tasks.md** - Get implementation checklist",
+        "**Implement tasks sequentially** - Complete in order",
+        "**Confirm completion** - Ensure every item in `tasks.md` is finished before updating statuses",
+        "**Update checklist** - After all work is done, set every task to `- [x]` so the list reflects reality",
+        "**Approval gate** - Do not start implementation until the proposal is reviewed and approved"
+      ]
+    },
+    "stage3": {
+      "title": "Stage 3: Archiving Changes",
+      "description": "After deployment, create separate PR to:"
+    }
+  }
+}

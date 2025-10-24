@@ -1,0 +1,22 @@
+{
+  "title": "{{projectName}} 上下文",
+  "purpose": "目的",
+  "purposeDescription": "{{description}}",
+  "techStack": "技术栈",
+  "techStackItems": "{{techStack}}",
+  "conventions": "项目约定",
+  "codeStyle": "代码风格",
+  "codeStyleDescription": "[描述您的代码风格偏好、格式化规则和命名约定]",
+  "architecture": "架构模式",
+  "architectureDescription": "[记录您的架构决策和模式]",
+  "testing": "测试策略",
+  "testingDescription": "[解释您的测试方法和要求]",
+  "git": "Git 工作流程",
+  "gitDescription": "[描述您的分支策略和提交约定]",
+  "domain": "领域上下文",
+  "domainDescription": "[添加 AI 助手需要了解的领域特定知识]",
+  "constraints": "重要约束",
+  "constraintsDescription": "[列出任何技术、业务或法规约束]",
+  "dependencies": "外部依赖",
+  "dependenciesDescription": "[记录关键的外部服务、API 或系统]"
+}

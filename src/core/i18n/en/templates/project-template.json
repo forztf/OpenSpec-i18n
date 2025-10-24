@@ -1,0 +1,22 @@
+{
+  "title": "{{projectName}} Context",
+  "purpose": "Purpose",
+  "purposeDescription": "{{description}}",
+  "techStack": "Tech Stack",
+  "techStackItems": "{{techStack}}",
+  "conventions": "Project Conventions",
+  "codeStyle": "Code Style",
+  "codeStyleDescription": "[Describe your code style preferences, formatting rules, and naming conventions]",
+  "architecture": "Architecture Patterns",
+  "architectureDescription": "[Document your architectural decisions and patterns]",
+  "testing": "Testing Strategy",
+  "testingDescription": "[Explain your testing approach and requirements]",
+  "git": "Git Workflow",
+  "gitDescription": "[Describe your branching strategy and commit conventions]",
+  "domain": "Domain Context",
+  "domainDescription": "[Add domain-specific knowledge that AI assistants need to understand]",
+  "constraints": "Important Constraints",
+  "constraintsDescription": "[List any technical, business, or regulatory constraints]",
+  "dependencies": "External Dependencies",
+  "dependenciesDescription": "[Document key external services, APIs, or systems]"
+}

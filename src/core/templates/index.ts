@@ -4,6 +4,8 @@ import { claudeTemplate } from './claude-template.js';
 import { clineTemplate } from './cline-template.js';
 import { agentsRootStubTemplate } from './agents-root-stub.js';
 import { getSlashCommandBody, SlashCommandId } from './slash-command-templates.js';
+import { initI18n } from '../i18n/index.js';
+import { renderAgentsTemplateFromI18n, renderProjectTemplateFromI18n, renderClaudeTemplateFromI18n, renderClineTemplateFromI18n, renderAgentsRootStubFromI18n, renderSlashFromI18n } from './i18n-renderers.js';
 
 export interface Template {
   path: string;
@@ -12,32 +14,29 @@ export interface Template {
 
 export class TemplateManager {
   static getTemplates(context: ProjectContext = {}): Template[] {
-    return [
-      {
-        path: 'AGENTS.md',
-        content: agentsTemplate
-      },
-      {
-        path: 'project.md',
-        content: projectTemplate(context)
-      }
+    const i18nAgents = renderAgentsTemplateFromI18n();
+    const i18nProject = renderProjectTemplateFromI18n(context);
+    const files: Template[] = [
+      { path: 'AGENTS.md', content: i18nAgents ?? agentsTemplate },
+      { path: 'project.md', content: i18nProject ?? projectTemplate(context) },
     ];
+    return files;
   }
 
   static getClaudeTemplate(): string {
-    return claudeTemplate;
+    return renderClaudeTemplateFromI18n() ?? claudeTemplate;
   }
 
   static getClineTemplate(): string {
-    return clineTemplate;
+    return renderClineTemplateFromI18n() ?? clineTemplate;
   }
 
   static getAgentsStandardTemplate(): string {
-    return agentsRootStubTemplate;
+    return renderAgentsRootStubFromI18n() ?? agentsRootStubTemplate;
   }
 
   static getSlashCommandBody(id: SlashCommandId): string {
-    return getSlashCommandBody(id);
+    return renderSlashFromI18n(id as any) ?? getSlashCommandBody(id);
   }
 }
 

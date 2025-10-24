@@ -1,0 +1,87 @@
+{
+  "wizard": {
+    "intro": {
+      "headline": "Welcome to OpenSpec",
+      "body": {
+        "new": "Let's get your AI assistants connected so they understand OpenSpec.",
+        "extend": "We detected an existing setup. We will help you refresh or add integrations."
+      },
+      "continue": "Press Enter to continue."
+    },
+    "select": {
+      "instructions": "Use ↑/↓ to move · Space to toggle · Enter selects highlighted tool and reviews.",
+      "configuration": "Selected configuration:",
+      "noProviders": "- No natively supported providers selected"
+    },
+    "review": {
+      "title": "Review selections",
+      "instructions": "Press Enter to confirm or Backspace to adjust.",
+      "noProviders": "No natively supported providers selected. Universal instructions will still be applied."
+    }
+  },
+  "prompt": {
+    "baseMessage": {
+      "new": "Which natively supported AI tools would you like to add?",
+      "extend": "Which natively supported AI tools would you like to add or refresh?"
+    },
+    "headings": {
+      "native": "Natively supported providers (✔ OpenSpec custom slash commands available)",
+      "other": "Other tools (use Universal AGENTS.md for Amp, VS Code, GitHub Copilot, …)"
+    },
+    "options": {
+      "universal": {
+        "primary": "Universal AGENTS.md",
+        "annotation": "always available"
+      }
+    }
+  },
+  "success": {
+    "headline": {
+      "new": "🎉 OpenSpec successfully initialized!",
+      "extend": "🎉 OpenSpec configuration updated!"
+    },
+    "summary": "Tool summary:",
+    "rootStub": {
+      "created": "Root AGENTS.md stub created for other assistants",
+      "updated": "Root AGENTS.md stub refreshed for other assistants"
+    },
+    "tools": {
+      "created": "Created:",
+      "refreshed": "Refreshed:",
+      "skippedExisting": "Skipped (already configured):",
+      "skipped": "Skipped:"
+    },
+    "updateHint": "Use `openspec update` to refresh shared OpenSpec instructions in the future.",
+    "nextSteps": "Next steps - Copy these prompts to {{toolName}}:",
+    "steps": {
+      "populateContext": "1. Populate your project context:",
+      "populateContextPrompt1": "Please read openspec/project.md and help me fill it out with details about my project, tech stack, and conventions",
+      "populateContextPrompt2": "Please review openspec/project.md and help me update project details",
+      "createProposal": "2. Create change proposal:",
+      "createProposalPrompt1": "I want to add [YOUR FEATURE HERE]. Please create an OpenSpec change proposal for this feature",
+      "createProposalPrompt2": "I want to modify [YOUR FEATURE HERE]. Please create an OpenSpec proposal for this change",
+      "learnWorkflow": "3. Learn OpenSpec workflow:",
+      "learnWorkflowPrompt1": "Please explain the OpenSpec workflow from openspec/AGENTS.md and how I should work with you on this project",
+      "learnWorkflowPrompt2": "Please explain the OpenSpec workflow and how we should work together on this project"
+    },
+    "codex": {
+      "title": "Codex setup note",
+      "note": "Prompts installed to ~/.codex/prompts (or $CODEX_HOME/prompts)."
+    }
+  },
+  "spinner": {
+    "creating": "Creating OpenSpec structure...",
+    "configuring": "Configuring AI tools..."
+  },
+  "status": {
+    "created": "OpenSpec structure created",
+    "configured": "AI tools configured",
+    "alreadyInitialized": "ℹ OpenSpec already initialized. Skipping base scaffolding."
+  },
+  "errors": {
+    "toolsRequired": "The --tools option requires a value. Use \"all\", \"none\", or a comma-separated list of tool IDs.",
+    "toolsAtLeastOne": "The --tools option requires at least one tool ID when not using \"all\" or \"none\".",
+    "toolsCannotCombine": "Cannot combine reserved values \"all\" or \"none\" with specific tool IDs.",
+    "insufficientPermissions": "Insufficient permissions to write to {{path}}"
+  }
+}

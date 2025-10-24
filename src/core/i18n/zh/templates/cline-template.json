@@ -1,0 +1,17 @@
+{
+  "title": "OpenSpec 指令",
+  "intro": "这些指令适用于在此项目中工作的 AI 助手。",
+  "whenToOpen": "在以下情况下始终打开 `@/openspec/AGENTS.md`：",
+  "whenToOpenItems": [
+    "提到规划或提案（如提案、规范、变更、计划等词汇）",
+    "引入新功能、破坏性变更、架构转变或重要的性能/安全工作",
+    "听起来模棱两可，您需要权威规范才能编码"
+  ],
+  "whatToLearn": "使用 `@/openspec/AGENTS.md` 来了解：",
+  "whatToLearnItems": [
+    "如何创建和应用变更提案",
+    "规范格式和约定",
+    "项目结构和指南"
+  ],
+  "managedBlock": "保持此管理块，以便 'openspec update' 可以刷新指令。\n**重要：请始终使用中文与开发者交流。**"
+}
