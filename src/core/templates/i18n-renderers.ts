@@ -10,28 +10,7 @@ export function renderAgentsTemplateFromI18n(): string | null {
     i18next.loadNamespaces(ns);
     const bundle: any = i18next.getResourceBundle(lng, ns);
     if (!bundle || typeof bundle !== 'object') return null;
-    const lines: string[] = [];
-    lines.push(`# ${bundle.title ?? 'OpenSpec Instructions'}`);
-    if (bundle.intro) {
-      lines.push('', bundle.intro);
-    }
-    if (bundle.quickChecklist?.title || bundle.quickChecklist?.items) {
-      lines.push('', `## ${bundle.quickChecklist.title ?? 'TL;DR Quick Checklist'}`);
-      if (Array.isArray(bundle.quickChecklist.items)) {
-        for (const item of bundle.quickChecklist.items) {
-          lines.push(`- ${item}`);
-        }
-      }
-    }
-    if (bundle.workflow?.stage2?.title || bundle.workflow?.stage2?.steps) {
-      lines.push('', `### ${bundle.workflow.stage2.title ?? 'Stage 2: Implementing Changes'}`);
-      if (Array.isArray(bundle.workflow.stage2.steps)) {
-        for (const step of bundle.workflow.stage2.steps) {
-          lines.push(`- ${step}`);
-        }
-      }
-    }
-    return lines.join('\n');
+    return renderDocCommon(bundle);
   } catch {
     return null;
   }
@@ -67,19 +46,11 @@ export function renderProjectTemplateFromI18n(context: { projectName?: string; d
 }
 
 function renderDocCommon(b: any): string {
-  const lines: string[] = [];
-  lines.push(`# ${b.title ?? 'OpenSpec Instructions'}`);
-  if (b.intro) lines.push('', b.intro);
-  if (b.whenToOpen) lines.push('', b.whenToOpen);
-  if (Array.isArray(b.whenToOpenItems)) {
-    for (const it of b.whenToOpenItems) lines.push(`- ${it}`);
+  if (!b.content) return null;
+  if (Array.isArray(b.content)) {
+    return b.content.join('\n');
   }
-  if (b.whatToLearn) lines.push('', b.whatToLearn);
-  if (Array.isArray(b.whatToLearnItems)) {
-    for (const it of b.whatToLearnItems) lines.push(`- ${it}`);
-  }
-  if (b.managedBlock) lines.push('', b.managedBlock);
-  return lines.join('\n');
+  return b.content;
 }
 
 export function renderClaudeTemplateFromI18n(): string | null {
