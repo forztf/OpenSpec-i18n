@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { UpdateCommand } from '../../src/core/update.js';
 import { FileSystemUtils } from '../../src/utils/file-system.js';
 import { ToolRegistry } from '../../src/core/configurators/registry.js';
+import { initI18n } from '../../src/core/i18n/index.js';
 import path from 'path';
 import fs from 'fs/promises';
 import os from 'os';
@@ -11,6 +12,8 @@ describe('UpdateCommand', () => {
   let testDir: string;
   let updateCommand: UpdateCommand;
   let prevCodexHome: string | undefined;
+  let prevOpenspecLang: string | undefined;
+  let prevLang: string | undefined;
 
   beforeEach(async () => {
     // Create a temporary test directory
@@ -26,13 +29,33 @@ describe('UpdateCommand', () => {
     // Route Codex global directory into the test sandbox
     prevCodexHome = process.env.CODEX_HOME;
     process.env.CODEX_HOME = path.join(testDir, '.codex');
+
+    // Save original environment variables for language control
+    prevOpenspecLang = process.env.OPENSPEC_LANG;
+    prevLang = process.env.LANG;
+
+    // Force English language for consistent test results
+    process.env.OPENSPEC_LANG = 'en';
+    process.env.LANG = 'en';
+
+    // Re-initialize i18n with English
+    await initI18n('en');
   });
 
   afterEach(async () => {
     // Clean up test directory
     await fs.rm(testDir, { recursive: true, force: true });
+    
+    // Restore Codex environment
     if (prevCodexHome === undefined) delete process.env.CODEX_HOME;
     else process.env.CODEX_HOME = prevCodexHome;
+
+    // Restore original language environment variables
+    if (prevOpenspecLang === undefined) delete process.env.OPENSPEC_LANG;
+    else process.env.OPENSPEC_LANG = prevOpenspecLang;
+    
+    if (prevLang === undefined) delete process.env.LANG;
+    else process.env.LANG = prevLang;
   });
 
   it('should update only existing CLAUDE.md file', async () => {

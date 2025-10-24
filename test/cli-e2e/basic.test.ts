@@ -1,9 +1,10 @@
-import { afterAll, describe, it, expect } from 'vitest';
+import { afterAll, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { tmpdir } from 'os';
 import { runCLI, cliProjectRoot } from '../helpers/run-cli.js';
 import { AI_TOOLS } from '../../src/core/config.js';
+import { initI18n } from '../../src/core/i18n/index.js';
 
 async function fileExists(filePath: string): Promise<boolean> {
   try {
@@ -31,6 +32,30 @@ afterAll(async () => {
 });
 
 describe('openspec CLI e2e basics', () => {
+  let prevOpenspecLang: string | undefined;
+  let prevLang: string | undefined;
+
+  beforeEach(async () => {
+    // Save original environment variables for language control
+    prevOpenspecLang = process.env.OPENSPEC_LANG;
+    prevLang = process.env.LANG;
+
+    // Force English language for consistent test results
+    process.env.OPENSPEC_LANG = 'en';
+    process.env.LANG = 'en';
+
+    // Re-initialize i18n with English
+    await initI18n('en');
+  });
+
+  afterEach(async () => {
+    // Restore original language environment variables
+    if (prevOpenspecLang === undefined) delete process.env.OPENSPEC_LANG;
+    else process.env.OPENSPEC_LANG = prevOpenspecLang;
+    
+    if (prevLang === undefined) delete process.env.LANG;
+    else process.env.LANG = prevLang;
+  });
   it('shows help output', async () => {
     const result = await runCLI(['--help']);
     expect(result.exitCode).toBe(0);

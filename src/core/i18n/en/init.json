@@ -21,12 +21,12 @@
   },
   "prompt": {
     "baseMessage": {
-      "new": "Which natively supported AI tools would you like to add?",
+      "new": "Which natively supported AI tools do you use?",
       "extend": "Which natively supported AI tools would you like to add or refresh?"
     },
     "headings": {
       "native": "Natively supported providers (✔ OpenSpec custom slash commands available)",
-      "other": "Other tools (use Universal AGENTS.md for Amp, VS Code, GitHub Copilot, …)"
+      "other": "Other tools (use Universal AGENTS.md for Amp, VS Code, GitHub Copilot, Trae, …)"
     },
     "options": {
       "universal": {

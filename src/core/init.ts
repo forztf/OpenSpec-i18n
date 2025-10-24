@@ -559,6 +559,10 @@ export class InitCommand {
     extendMode: boolean
   ): Promise<string[]> {
     const availableTools = AI_TOOLS.filter((tool) => tool.available);
+    
+    // 按 category 分组工具
+    const nativeTools = availableTools.filter((tool) => tool.category === 'native');
+    const otherTools = availableTools.filter((tool) => tool.category === 'other');
 
     const baseMessage = extendMode
       ? t('init:prompt.baseMessage.extend')
@@ -572,6 +576,7 @@ export class InitCommand {
     const initialSelected = Array.from(new Set(initialNativeSelection));
 
     const choices: ToolWizardChoice[] = [
+      // 原生支持的工具
       {
         kind: 'heading',
         value: '__heading-native__',
@@ -580,14 +585,15 @@ export class InitCommand {
         },
         selectable: false,
       },
-      ...availableTools.map<ToolWizardChoice>((tool) => ({
+      ...nativeTools.map<ToolWizardChoice>((tool) => ({
         kind: 'option',
         value: tool.value,
         label: parseToolLabel(tool.name),
         configured: Boolean(existingTools[tool.value]),
         selectable: true,
       })),
-      ...(availableTools.length
+      // 分隔符
+      ...(nativeTools.length && otherTools.length
         ? ([
             {
               kind: 'info' as const,
@@ -597,24 +603,59 @@ export class InitCommand {
             },
           ] as ToolWizardChoice[])
         : []),
-      {
-        kind: 'heading',
-        value: OTHER_TOOLS_HEADING_VALUE,
-        label: {
-          primary: t('init:prompt.headings.other'),
-        },
-        selectable: false,
-      },
-      {
-        kind: 'option',
-        value: ROOT_STUB_CHOICE_VALUE,
-        label: {
-          primary: t('init:prompt.options.universal.primary'),
-          annotation: t('init:prompt.options.universal.annotation'),
-        },
-        configured: extendMode,
-        selectable: true,
-      },
+      // 其他工具（使用通用 AGENTS.md）
+      ...(otherTools.length
+        ? ([
+            {
+              kind: 'heading',
+              value: OTHER_TOOLS_HEADING_VALUE,
+              label: {
+                primary: t('init:prompt.headings.other'),
+              },
+              selectable: false,
+            },
+            ...otherTools.map<ToolWizardChoice>((tool) => ({
+              kind: 'option',
+              value: tool.value,
+              label: parseToolLabel(tool.name),
+              configured: Boolean(existingTools[tool.value]),
+              selectable: true,
+            })),
+          ] as ToolWizardChoice[])
+        : []),
+      // 保留原有的通用选项（如果没有其他工具的话）
+      ...(otherTools.length === 0
+        ? ([
+            ...(nativeTools.length
+              ? ([
+                  {
+                    kind: 'info' as const,
+                    value: LIST_SPACER_VALUE,
+                    label: { primary: '' },
+                    selectable: false,
+                  },
+                ] as ToolWizardChoice[])
+              : []),
+            {
+              kind: 'heading',
+              value: OTHER_TOOLS_HEADING_VALUE,
+              label: {
+                primary: t('init:prompt.headings.other'),
+              },
+              selectable: false,
+            },
+            {
+              kind: 'option',
+              value: ROOT_STUB_CHOICE_VALUE,
+              label: {
+                primary: t('init:prompt.options.universal.primary'),
+                annotation: t('init:prompt.options.universal.annotation'),
+              },
+              configured: extendMode,
+              selectable: true,
+            },
+          ] as ToolWizardChoice[])
+        : []),
     ];
 
     return this.prompt({

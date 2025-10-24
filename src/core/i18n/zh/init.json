@@ -26,7 +26,7 @@
     },
     "headings": {
       "native": "原生支持的提供商（✔ 可用 OpenSpec 自定义斜杠命令）",
-      "other": "其他工具（使用通用 AGENTS.md 适用于 Amp、VS Code、GitHub Copilot 等）"
+      "other": "其他工具（使用通用 AGENTS.md 适用于 Amp、VS Code、GitHub Copilot、Trae 等）"
     },
     "options": {
       "universal": {
