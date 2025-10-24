@@ -387,6 +387,9 @@ export class InitCommand {
     const openspecDir = OPENSPEC_DIR_NAME;
     const openspecPath = path.join(projectPath, openspecDir);
 
+    // Initialize i18n with environment variable support
+    await initI18n();
+
     // Validation happens silently in the background
     const extendMode = await this.validate(projectPath, openspecPath);
     const existingToolStates = await this.getExistingToolStates(projectPath);

@@ -30,8 +30,8 @@
 - "我想创建一个规范"
 
 宽松匹配指导：
-- 包含以下之一：`proposal`、`change`、`spec`
-- 以及以下之一：`create`、`plan`、`make`、`start`、`help`
+- 包含以下之一：`proposal`、`change`、`spec`、`提案`、`变更`、`规范`
+- 以及以下之一：`create`、`plan`、`make`、`start`、`help`、`创建`、`规划`、`生成`、`实现`、`帮我`
 
 跳过提案的情况：
 - 错误修复（恢复预期行为）

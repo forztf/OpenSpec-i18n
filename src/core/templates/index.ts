@@ -14,13 +14,10 @@ export interface Template {
 
 export class TemplateManager {
   static getTemplates(context: ProjectContext = {}): Template[] {
-    const i18nAgents = renderAgentsTemplateFromI18n();
-    const i18nProject = renderProjectTemplateFromI18n(context);
-    const files: Template[] = [
-      { path: 'AGENTS.md', content: i18nAgents ?? agentsTemplate },
-      { path: 'project.md', content: i18nProject ?? projectTemplate(context) },
+    return [
+      { path: 'AGENTS.md', content: renderAgentsTemplateFromI18n() ?? agentsTemplate },
+      { path: 'project.md', content: renderProjectTemplateFromI18n(context) ?? projectTemplate(context) },
     ];
-    return files;
   }
 
   static getClaudeTemplate(): string {

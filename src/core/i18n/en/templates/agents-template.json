@@ -140,6 +140,7 @@
     "│   │       └── [capability]/",
     "│   │           └── spec.md # ADDED/MODIFIED/REMOVED",
     "│   └── archive/            # Completed changes",
+    "",
     "```",
     "",
     "## Creating Change Proposals",
@@ -453,6 +454,15 @@
     "openspec archive <change-id> [--yes|-y]  # Mark complete (add --yes for automation)",
     "```",
     "",
-    "Remember: Specs are truth. Changes are proposals. Keep them in sync."
+    "## Multi-language Support",
+    "",
+    "OpenSpec now supports multiple languages:",
+    "- Default languages: English (en) and Chinese (zh)",
+    "- Language detection: Automatic detection based on OS locale",
+    "- Manual switching: Through command-line arguments or configuration files",
+    "- Resource structure: JSON files organized by language and namespace",
+    "",
+    "Remember: Specs are truth. Changes are proposals. Keep them in sync.",
+    ""
   ]
 }

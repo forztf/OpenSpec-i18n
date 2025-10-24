@@ -37,6 +37,8 @@
     "!dist/**/*.map"
   ],
   "scripts": {
+    "convert:templates": "node scripts/convert-md-to-json.js",
+    "prebuild": "pnpm run convert:templates",
     "build": "node build.js",
     "dev": "tsc --watch",
     "dev:cli": "pnpm build && node bin/openspec.js",

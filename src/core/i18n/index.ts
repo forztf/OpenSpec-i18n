@@ -33,11 +33,21 @@ const initializeI18n = async () => {
       backend: {
         loadPath: path.join(__dirname, '{{lng}}', '{{ns}}.json'),
       },
-      // 命名空间 - 只使用实际存在的 'init' 命名空间
-      ns: ['init'],
+      // 命名空间 - 包含所有必要的命名空间
+      ns: [
+        'init',
+        'templates/agents-template',
+        'templates/project-template',
+        'templates/claude-template',
+        'templates/cline-template',
+        'templates/agents-root-stub',
+        'templates/slash-command-templates'
+      ],
       defaultNS: 'init',
       // 关闭调试模式，避免不必要的控制台输出
       debug: false,
+      // 启用同步模式，适用于单用户系统
+      initAsync: false,
       // 插值选项
       interpolation: {
         escapeValue: false, // React 已经默认转义
@@ -72,14 +82,25 @@ export async function initI18n(preferred?: string): Promise<void> {
   const lang = preferred || process.env.OPENSPEC_LANG || detectOSLanguage();
   
   try {
-    // 确保命名空间已加载
-    await i18next.loadNamespaces(['init']);
+    // 确保所有必要的命名空间已加载，包括模板相关的命名空间
+    const namespaces = [
+      'init',
+      'templates/agents-template',
+      'templates/project-template',
+      'templates/claude-template',
+      'templates/cline-template',
+      'templates/agents-root-stub',
+      'templates/slash-command-templates'
+    ];
+    
+    await i18next.loadNamespaces(namespaces);
     await i18next.changeLanguage(lang);
     
     // 添加调试信息
     if (process.env.NODE_ENV === 'development') {
       console.log(`i18n initialized with language: ${lang}`);
       console.log(`Available namespaces:`, i18next.options.ns);
+      console.log(`Loaded namespaces:`, namespaces);
     }
   } catch (error) {
     console.warn('Failed to initialize i18n:', error);

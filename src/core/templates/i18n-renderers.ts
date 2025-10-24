@@ -5,9 +5,7 @@ export function renderAgentsTemplateFromI18n(): string | null {
   const lng = i18next.language || 'en';
   const ns = 'templates/agents-template';
   try {
-    // Ensure namespace is loaded from FS backend
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    i18next.loadNamespaces(ns);
+    // 在同步模式下，命名空间已经在初始化时加载
     const bundle: any = i18next.getResourceBundle(lng, ns);
     if (!bundle || typeof bundle !== 'object') return null;
     return renderDocCommon(bundle);
@@ -20,10 +18,15 @@ export function renderProjectTemplateFromI18n(context: { projectName?: string; d
   const lng = i18next.language || 'en';
   const ns = 'templates/project-template';
   try {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    i18next.loadNamespaces(ns);
     const b: any = i18next.getResourceBundle(lng, ns);
     if (!b) return null;
+    
+    // 如果有 content 数组，直接使用
+    if (b.content && Array.isArray(b.content)) {
+      return b.content.join('\n');
+    }
+    
+    // 否则使用旧的结构化方式
     const name = context.projectName || 'Project';
     const techStack = context.techStack?.length ? context.techStack.map((t) => `- ${t}`).join('\n') : '- [List your primary technologies]';
     const desc = context.description || b.purposeDescription || '[Describe your project\'s purpose and goals]';
@@ -45,7 +48,7 @@ export function renderProjectTemplateFromI18n(context: { projectName?: string; d
   }
 }
 
-function renderDocCommon(b: any): string {
+function renderDocCommon(b: any): string | null {
   if (!b.content) return null;
   if (Array.isArray(b.content)) {
     return b.content.join('\n');
@@ -57,8 +60,6 @@ export function renderClaudeTemplateFromI18n(): string | null {
   const lng = i18next.language || 'en';
   const ns = 'templates/claude-template';
   try {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    i18next.loadNamespaces(ns);
     const b: any = i18next.getResourceBundle(lng, ns);
     if (!b) return null;
     return renderDocCommon(b);
@@ -71,8 +72,6 @@ export function renderClineTemplateFromI18n(): string | null {
   const lng = i18next.language || 'en';
   const ns = 'templates/cline-template';
   try {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    i18next.loadNamespaces(ns);
     const b: any = i18next.getResourceBundle(lng, ns);
     if (!b) return null;
     return renderDocCommon(b);
@@ -85,8 +84,6 @@ export function renderAgentsRootStubFromI18n(): string | null {
   const lng = i18next.language || 'en';
   const ns = 'templates/agents-root-stub';
   try {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    i18next.loadNamespaces(ns);
     const b: any = i18next.getResourceBundle(lng, ns);
     if (!b) return null;
     return renderDocCommon(b);
@@ -99,8 +96,6 @@ export function renderSlashFromI18n(id: 'proposal' | 'apply' | 'archive'): strin
   const lng = i18next.language || 'en';
   const ns = 'templates/slash-command-templates';
   try {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    i18next.loadNamespaces(ns);
     const b: any = i18next.getResourceBundle(lng, ns);
     if (!b || !b[id]) return null;
     const section = b[id];
