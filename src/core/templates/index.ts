@@ -16,7 +16,7 @@ export class TemplateManager {
   static getTemplates(context: ProjectContext = {}): Template[] {
     return [
       { path: 'AGENTS.md', content: renderAgentsTemplateFromI18n() ?? agentsTemplate },
-      { path: 'project.md', content: renderProjectTemplateFromI18n(context) ?? projectTemplate(context) },
+      { path: 'project.md', content: renderProjectTemplateFromI18n() ?? projectTemplate(context) },
     ];
   }
 
