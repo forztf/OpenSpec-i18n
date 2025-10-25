@@ -1,12 +1,5 @@
 {
   "content": [
-    "---",
-    "description: Implement an approved OpenSpec change and keep tasks in sync.",
-    "argument-hint: change-id",
-    "---",
-    "",
-    "$ARGUMENTS",
-    "<!-- OPENSPEC:START -->",
     "**防护措施**",
     "- 首先采用直接、最小的实现，只有在明确需要时才添加复杂性。",
     "- 保持变更范围紧密围绕请求的结果。",
@@ -22,7 +15,7 @@
     "",
     "**参考**",
     "- 如果在实施过程中需要提案的额外上下文，请使用 `openspec show <id> --json --deltas-only`。",
-    "<!-- OPENSPEC:END -->",
+    "",
     ""
   ]
 }

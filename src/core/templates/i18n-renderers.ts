@@ -72,13 +72,12 @@ export function renderAgentsRootStubFromI18n(): string | null {
 }
 
 export function renderSlashFromI18n(id: 'proposal' | 'apply' | 'archive'): string | null {
-  const lng = i18next.language || 'en';
-  const ns = `templates/slash-command-${id}-templates`;
-  try {
-    const b: any = i18next.getResourceBundle(lng, ns);
-    if (!b) return null;
-    return renderDocCommon(b);
-  } catch {
+  const currentLanguage = i18next.language || 'en';
+  const resourceBundle = i18next.getResourceBundle(currentLanguage, `templates/slash-command-${id}-templates`);
+  
+  if (!resourceBundle || !resourceBundle.content) {
     return null;
   }
+  
+  return resourceBundle.content.join('\n');
 }

@@ -36,12 +36,15 @@ const initializeI18n = async () => {
       // 命名空间 - 包含所有必要的命名空间
       ns: [
         'init',
+        'update',
         'templates/agents-template',
         'templates/project-template',
         'templates/claude-template',
         'templates/cline-template',
         'templates/agents-root-stub',
-        'templates/slash-command-templates'
+        'templates/slash-command-apply-templates',
+        'templates/slash-command-archive-templates',
+        'templates/slash-command-proposal-templates'
       ],
       defaultNS: 'init',
       // 关闭调试模式，避免不必要的控制台输出
@@ -85,12 +88,15 @@ export async function initI18n(preferred?: string): Promise<void> {
     // 确保所有必要的命名空间已加载，包括模板相关的命名空间
     const namespaces = [
       'init',
+      'update',
       'templates/agents-template',
       'templates/project-template',
       'templates/claude-template',
       'templates/cline-template',
       'templates/agents-root-stub',
-      'templates/slash-command-templates'
+      'templates/slash-command-apply-templates',
+      'templates/slash-command-archive-templates',
+      'templates/slash-command-proposal-templates'
     ];
     
     await i18next.loadNamespaces(namespaces);

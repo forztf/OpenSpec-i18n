@@ -1,10 +1,3 @@
----
-name: /openspec-apply
-id: openspec-apply
-category: OpenSpec
-description: Implement an approved OpenSpec change and keep tasks in sync.
----
-<!-- OPENSPEC:START -->
 **Guardrails**
 - Favor straightforward, minimal implementations first and add complexity only when it is requested or clearly required.
 - Keep changes tightly scoped to the requested outcome.
@@ -20,4 +13,4 @@ Track these steps as TODOs and complete them one by one.
 
 **Reference**
 - Use `openspec show <id> --json --deltas-only` if you need additional context from the proposal while implementing.
-<!-- OPENSPEC:END -->
+

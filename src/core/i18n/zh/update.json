@@ -1,0 +1,22 @@
+{
+  "errors": {
+    "noOpenSpecDirectory": "未找到 OpenSpec 目录。请先运行 'openspec init'。",
+    "insufficientPermissions": "权限不足，无法修改 {{fileName}}",
+    "updateFailed": "更新 {{fileName}} 失败：{{error}}",
+    "slashCommandUpdateFailed": "更新 {{toolId}} 的斜杠命令失败：{{error}}"
+  },
+  "success": {
+    "updatedInstructions": "已更新 OpenSpec 指令 ({{files}})",
+    "updatedAiToolFiles": "已更新 AI 工具文件：{{files}}",
+    "updatedSlashCommands": "已更新斜杠命令：{{files}}",
+    "failedToUpdate": "更新失败：{{items}}"
+  },
+  "files": {
+    "agentsCreated": "AGENTS.md (已创建)",
+    "agents": "AGENTS.md",
+    "openspecAgents": "openspec/AGENTS.md"
+  },
+  "slashCommands": {
+    "refreshLabel": "斜杠命令刷新 ({{toolId}})"
+  }
+}

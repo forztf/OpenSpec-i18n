@@ -1,10 +1,3 @@
----
-description: Archive a deployed OpenSpec change and update specs.
-argument-hint: change-id
----
-
-$ARGUMENTS
-<!-- OPENSPEC:START -->
 **防护措施**
 - 首先采用直接、最小的实现，只有在明确需要时才添加复杂性。
 - 保持变更范围紧密围绕请求的结果。
@@ -24,4 +17,4 @@ $ARGUMENTS
 **参考**
 - 在归档之前使用 `openspec list` 确认变更 ID。
 - 使用 `openspec list --specs` 检查刷新的规范，并在移交之前解决任何验证问题。
-<!-- OPENSPEC:END -->
+

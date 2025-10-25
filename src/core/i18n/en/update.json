@@ -1,0 +1,22 @@
+{
+  "errors": {
+    "noOpenSpecDirectory": "No OpenSpec directory found. Run 'openspec init' first.",
+    "insufficientPermissions": "Insufficient permissions to modify {{fileName}}",
+    "updateFailed": "Failed to update {{fileName}}: {{error}}",
+    "slashCommandUpdateFailed": "Failed to update slash commands for {{toolId}}: {{error}}"
+  },
+  "success": {
+    "updatedInstructions": "Updated OpenSpec instructions ({{files}})",
+    "updatedAiToolFiles": "Updated AI tool files: {{files}}",
+    "updatedSlashCommands": "Updated slash commands: {{files}}",
+    "failedToUpdate": "Failed to update: {{items}}"
+  },
+  "files": {
+    "agentsCreated": "AGENTS.md (created)",
+    "agents": "AGENTS.md",
+    "openspecAgents": "openspec/AGENTS.md"
+  },
+  "slashCommands": {
+    "refreshLabel": "slash command refresh ({{toolId}})"
+  }
+}

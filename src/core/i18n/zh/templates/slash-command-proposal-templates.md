@@ -1,10 +1,3 @@
----
-description: Scaffold a new OpenSpec change and validate strictly.
-argument-hint: request or feature description
----
-
-$ARGUMENTS
-<!-- OPENSPEC:START -->
 **防护措施**
 - 首先采用直接、最小的实现，只有在明确需要时才添加复杂性。
 - 保持变更范围紧密围绕请求的结果。
@@ -24,4 +17,4 @@ $ARGUMENTS
 - 当验证失败时，使用 `openspec show <id> --json --deltas-only` 或 `openspec show <spec> --type spec` 检查详细信息。
 - 在编写新需求之前，使用 `rg -n "Requirement:|Scenario:" openspec/specs` 搜索现有需求。
 - 使用 `rg <keyword>`、`ls` 或直接文件读取探索代码库，使提案与当前实现现实保持一致。
-<!-- OPENSPEC:END -->
+
