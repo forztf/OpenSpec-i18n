@@ -1,0 +1,27 @@
+{
+  "dashboard": {
+    "title": "OpenSpec Dashboard"
+  },
+  "sections": {
+    "activeChanges": "Active Changes",
+    "completedChanges": "Completed Changes",
+    "specifications": "Specifications"
+  },
+  "summary": {
+    "title": "Summary:",
+    "specifications": "Specifications: {{totalSpecs}} specs, {{totalRequirements}} requirements",
+    "activeChanges": "Active Changes: {{count}} in progress",
+    "completedChanges": "Completed Changes: {{count}}",
+    "taskProgress": "Task Progress: {{completed}}/{{total}} ({{percentage}}% complete)"
+  },
+  "labels": {
+    "requirement": "requirement",
+    "requirements": "requirements"
+  },
+  "footer": {
+    "helpText": "Use {{listChanges}} or {{listSpecs}} for detailed views"
+  },
+  "errors": {
+    "noOpenspecDir": "No openspec directory found"
+  }
+}

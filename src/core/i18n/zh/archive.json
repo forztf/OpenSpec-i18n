@@ -1,0 +1,22 @@
+{
+  "errors": {
+    "noChangesDir": "未找到 OpenSpec 变更目录。请先运行 'openspec init'。",
+    "archiveFailed": "归档失败：{{error}}",
+    "noChanges": "未找到活跃的变更。",
+    "archiveExists": "归档 '{{archiveName}}' 已存在。"
+  },
+  "messages": {
+    "archiveComplete": "归档操作成功完成。",
+    "totals": "总计：+ {{added}}，~ {{modified}}，- {{removed}}，→ {{renamed}}",
+    "specsUpdated": "规范更新成功。",
+    "archived": "变更 '{{changeName}}' 已归档为 '{{archiveName}}'。"
+  },
+  "prompts": {
+    "selectChange": "选择要归档的变更"
+  },
+  "status": {
+    "validating": "正在验证变更...",
+    "archiving": "正在归档变更...",
+    "updating": "正在更新规范..."
+  }
+}

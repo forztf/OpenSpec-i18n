@@ -37,6 +37,9 @@ const initializeI18n = async () => {
       ns: [
         'init',
         'update',
+        'archive',
+        'list',
+        'view',
         'templates/agents-template',
         'templates/project-template',
         'templates/claude-template',

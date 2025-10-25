@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "noChangesDir": "No OpenSpec changes directory found. Run 'openspec init' first."
+  },
+  "messages": {
+    "noChanges": "No active changes found.",
+    "noSpecs": "No specs found."
+  },
+  "titles": {
+    "changes": "Changes:",
+    "specs": "Specs:"
+  },
+  "labels": {
+    "requirements": "requirements"
+  }
+}

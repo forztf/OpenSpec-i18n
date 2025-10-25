@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "noChangesDir": "未找到 OpenSpec 变更目录。请先运行 'openspec init'。"
+  },
+  "messages": {
+    "noChanges": "未找到活跃的变更。",
+    "noSpecs": "未找到规范。"
+  },
+  "titles": {
+    "changes": "变更：",
+    "specs": "规范："
+  },
+  "labels": {
+    "requirements": "需求"
+  }
+}

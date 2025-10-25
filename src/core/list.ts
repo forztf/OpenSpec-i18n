@@ -4,6 +4,7 @@ import { getTaskProgressForChange, formatTaskStatus } from '../utils/task-progre
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { MarkdownParser } from './parsers/markdown-parser.js';
+import { initI18n, t } from './i18n/index.js';
 
 interface ChangeInfo {
   name: string;
@@ -13,6 +14,8 @@ interface ChangeInfo {
 
 export class ListCommand {
   async execute(targetPath: string = '.', mode: 'changes' | 'specs' = 'changes'): Promise<void> {
+    await initI18n();
+    
     if (mode === 'changes') {
       const changesDir = path.join(targetPath, 'openspec', 'changes');
       
@@ -20,7 +23,7 @@ export class ListCommand {
       try {
         await fs.access(changesDir);
       } catch {
-        throw new Error("No OpenSpec changes directory found. Run 'openspec init' first.");
+        throw new Error(t('list:errors.noChangesDir'));
       }
 
       // Get all directories in changes (excluding archive)
@@ -30,7 +33,7 @@ export class ListCommand {
         .map(entry => entry.name);
 
       if (changeDirs.length === 0) {
-        console.log('No active changes found.');
+        console.log(t('list:messages.noChanges'));
         return;
       }
 
@@ -50,7 +53,7 @@ export class ListCommand {
       changes.sort((a, b) => a.name.localeCompare(b.name));
 
       // Display results
-      console.log('Changes:');
+      console.log(t('list:titles.changes'));
       const padding = '  ';
       const nameWidth = Math.max(...changes.map(c => c.name.length));
       for (const change of changes) {
@@ -66,14 +69,14 @@ export class ListCommand {
     try {
       await fs.access(specsDir);
     } catch {
-      console.log('No specs found.');
+      console.log(t('list:messages.noSpecs'));
       return;
     }
 
     const entries = await fs.readdir(specsDir, { withFileTypes: true });
     const specDirs = entries.filter(e => e.isDirectory()).map(e => e.name);
     if (specDirs.length === 0) {
-      console.log('No specs found.');
+      console.log(t('list:messages.noSpecs'));
       return;
     }
 
@@ -93,12 +96,12 @@ export class ListCommand {
     }
 
     specs.sort((a, b) => a.id.localeCompare(b.id));
-    console.log('Specs:');
+    console.log(t('list:titles.specs'));
     const padding = '  ';
     const nameWidth = Math.max(...specs.map(s => s.id.length));
     for (const spec of specs) {
       const padded = spec.id.padEnd(nameWidth);
-      console.log(`${padding}${padded}     requirements ${spec.requirementCount}`);
+      console.log(`${padding}${padded}     ${t('list:labels.requirements')} ${spec.requirementCount}`);
     }
   }
 }

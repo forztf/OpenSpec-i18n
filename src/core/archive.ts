@@ -5,6 +5,7 @@ import { FileSystemUtils } from '../utils/file-system.js';
 import { getTaskProgressForChange, formatTaskStatus } from '../utils/task-progress.js';
 import { Validator } from './validation/validator.js';
 import chalk from 'chalk';
+import { initI18n, t } from './i18n/index.js';
 import {
   extractRequirementsSection,
   parseDeltaSpec,
@@ -23,6 +24,9 @@ export class ArchiveCommand {
     changeName?: string,
     options: { yes?: boolean; skipSpecs?: boolean; noValidate?: boolean; validate?: boolean } = {}
   ): Promise<void> {
+    // Initialize i18n
+    await initI18n();
+    
     const targetPath = '.';
     const changesDir = path.join(targetPath, 'openspec', 'changes');
     const archiveDir = path.join(changesDir, 'archive');
@@ -32,14 +36,14 @@ export class ArchiveCommand {
     try {
       await fs.access(changesDir);
     } catch {
-      throw new Error("No OpenSpec changes directory found. Run 'openspec init' first.");
+      throw new Error(t('archive:errors.noChangesDir'));
     }
 
     // Get change name interactively if not provided
     if (!changeName) {
       const selectedChange = await this.selectChange(changesDir);
       if (!selectedChange) {
-        console.log('No change selected. Aborting.');
+        console.log(t('archive:messages.archiveComplete'));
         return;
       }
       changeName = selectedChange;
@@ -51,10 +55,10 @@ export class ArchiveCommand {
     try {
       const stat = await fs.stat(changeDir);
       if (!stat.isDirectory()) {
-        throw new Error(`Change '${changeName}' not found.`);
+        throw new Error(t('archive:errors.archiveFailed', { error: `Change '${changeName}' not found.` }));
       }
     } catch {
-      throw new Error(`Change '${changeName}' not found.`);
+      throw new Error(t('archive:errors.archiveFailed', { error: `Change '${changeName}' not found.` }));
     }
 
     const skipValidation = options.validate === false || options.noValidate === true;
@@ -225,9 +229,14 @@ export class ArchiveCommand {
             totals.renamed += p.counts.renamed;
           }
           console.log(
-            `Totals: + ${totals.added}, ~ ${totals.modified}, - ${totals.removed}, → ${totals.renamed}`
+            t('archive:messages.totals', { 
+              added: totals.added, 
+              modified: totals.modified, 
+              removed: totals.removed, 
+              renamed: totals.renamed 
+            })
           );
-          console.log('Specs updated successfully.');
+          console.log(t('archive:messages.specsUpdated'));
         }
       }
     }
@@ -239,7 +248,7 @@ export class ArchiveCommand {
     // Check if archive already exists
     try {
       await fs.access(archivePath);
-      throw new Error(`Archive '${archiveName}' already exists.`);
+      throw new Error(t('archive:errors.archiveExists', { archiveName }));
     } catch (error: any) {
       if (error.code !== 'ENOENT') {
         throw error;
@@ -252,7 +261,7 @@ export class ArchiveCommand {
     // Move change to archive
     await fs.rename(changeDir, archivePath);
     
-    console.log(`Change '${changeName}' archived as '${archiveName}'.`);
+    console.log(t('archive:messages.archived', { changeName, archiveName }));
   }
 
   private async selectChange(changesDir: string): Promise<string | null> {
@@ -264,7 +273,7 @@ export class ArchiveCommand {
       .sort();
 
     if (changeDirs.length === 0) {
-      console.log('No active changes found.');
+      console.log(t('archive:errors.noChanges'));
       return null;
     }
 
@@ -289,7 +298,7 @@ export class ArchiveCommand {
 
     try {
       const answer = await select({
-        message: 'Select a change to archive',
+        message: t('archive:prompts.selectChange'),
         choices
       });
       return answer;

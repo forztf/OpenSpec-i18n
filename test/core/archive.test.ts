@@ -4,6 +4,7 @@ import { Validator } from '../../src/core/validation/validator.js';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
+import { initI18n } from '../../src/core/i18n/index.js';
 
 // Mock @inquirer/prompts
 vi.mock('@inquirer/prompts', () => ({
@@ -15,6 +16,8 @@ describe('ArchiveCommand', () => {
   let tempDir: string;
   let archiveCommand: ArchiveCommand;
   const originalConsoleLog = console.log;
+  let prevOpenspecLang: string | undefined;
+  let prevLang: string | undefined;
 
   beforeEach(async () => {
     // Create temp directory
@@ -23,6 +26,17 @@ describe('ArchiveCommand', () => {
     
     // Change to temp directory
     process.chdir(tempDir);
+    
+    // Save original environment variables for language control
+    prevOpenspecLang = process.env.OPENSPEC_LANG;
+    prevLang = process.env.LANG;
+
+    // Force English language for consistent test results
+    process.env.OPENSPEC_LANG = 'en';
+    process.env.LANG = 'en';
+
+    // Re-initialize i18n with English
+    await initI18n('en');
     
     // Create OpenSpec structure
     const openspecDir = path.join(tempDir, 'openspec');
@@ -39,6 +53,13 @@ describe('ArchiveCommand', () => {
   afterEach(async () => {
     // Restore console.log
     console.log = originalConsoleLog;
+    
+    // Restore original language environment variables
+    if (prevOpenspecLang === undefined) delete process.env.OPENSPEC_LANG;
+    else process.env.OPENSPEC_LANG = prevOpenspecLang;
+    
+    if (prevLang === undefined) delete process.env.LANG;
+    else process.env.LANG = prevLang;
     
     // Clear mocks
     vi.clearAllMocks();

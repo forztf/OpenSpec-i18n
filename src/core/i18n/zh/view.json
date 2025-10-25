@@ -1,0 +1,27 @@
+{
+  "dashboard": {
+    "title": "OpenSpec 仪表盘"
+  },
+  "sections": {
+    "activeChanges": "活跃变更",
+    "completedChanges": "已完成变更",
+    "specifications": "规范"
+  },
+  "summary": {
+    "title": "摘要：",
+    "specifications": "规范：{{totalSpecs}} 个规范，{{totalRequirements}} 个需求",
+    "activeChanges": "活跃变更：{{count}} 个进行中",
+    "completedChanges": "已完成变更：{{count}} 个",
+    "taskProgress": "任务进度：{{completed}}/{{total}} ({{percentage}}% 完成)"
+  },
+  "labels": {
+    "requirement": "个需求",
+    "requirements": "个需求"
+  },
+  "footer": {
+    "helpText": "使用 {{listChanges}} 或 {{listSpecs}} 查看详细信息"
+  },
+  "errors": {
+    "noOpenspecDir": "未找到 openspec 目录"
+  }
+}

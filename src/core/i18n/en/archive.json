@@ -1,0 +1,22 @@
+{
+  "errors": {
+    "noChangesDir": "No OpenSpec changes directory found. Run 'openspec init' first.",
+    "archiveFailed": "Archive failed: {{error}}",
+    "noChanges": "No active changes found.",
+    "archiveExists": "Archive '{{archiveName}}' already exists."
+  },
+  "messages": {
+    "archiveComplete": "Archive operation completed successfully.",
+    "totals": "Totals: + {{added}}, ~ {{modified}}, - {{removed}}, → {{renamed}}",
+    "specsUpdated": "Specs updated successfully.",
+    "archived": "Change '{{changeName}}' archived as '{{archiveName}}'."
+  },
+  "prompts": {
+    "selectChange": "Select a change to archive"
+  },
+  "status": {
+    "validating": "Validating change...",
+    "archiving": "Archiving change...",
+    "updating": "Updating specifications..."
+  }
+}

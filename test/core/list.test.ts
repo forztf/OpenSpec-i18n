@@ -1,18 +1,32 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { promises as fs } from 'fs';
 import path from 'path';
 import os from 'os';
 import { ListCommand } from '../../src/core/list.js';
+import { initI18n } from '../../src/core/i18n/index.js';
 
 describe('ListCommand', () => {
   let tempDir: string;
   let originalLog: typeof console.log;
   let logOutput: string[] = [];
+  let prevOpenspecLang: string | undefined;
+  let prevLang: string | undefined;
 
   beforeEach(async () => {
     // Create temp directory
     tempDir = path.join(os.tmpdir(), `openspec-list-test-${Date.now()}`);
     await fs.mkdir(tempDir, { recursive: true });
+
+    // Save original environment variables for language control
+    prevOpenspecLang = process.env.OPENSPEC_LANG;
+    prevLang = process.env.LANG;
+
+    // Force English language for consistent test results
+    process.env.OPENSPEC_LANG = 'en';
+    process.env.LANG = 'en';
+
+    // Re-initialize i18n with English
+    await initI18n('en');
 
     // Mock console.log to capture output
     originalLog = console.log;
@@ -25,6 +39,13 @@ describe('ListCommand', () => {
   afterEach(async () => {
     // Restore console.log
     console.log = originalLog;
+
+    // Restore original language environment variables
+    if (prevOpenspecLang === undefined) delete process.env.OPENSPEC_LANG;
+    else process.env.OPENSPEC_LANG = prevOpenspecLang;
+    
+    if (prevLang === undefined) delete process.env.LANG;
+    else process.env.LANG = prevLang;
 
     // Clean up temp directory
     await fs.rm(tempDir, { recursive: true, force: true });
