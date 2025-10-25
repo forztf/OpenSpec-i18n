@@ -73,16 +73,11 @@ export function renderAgentsRootStubFromI18n(): string | null {
 
 export function renderSlashFromI18n(id: 'proposal' | 'apply' | 'archive'): string | null {
   const lng = i18next.language || 'en';
-  const ns = 'templates/slash-command-templates';
+  const ns = `templates/slash-command-${id}-templates`;
   try {
     const b: any = i18next.getResourceBundle(lng, ns);
-    if (!b || !b[id]) return null;
-    const section = b[id];
-    const parts = [] as string[];
-    if (section.guardrails) parts.push(section.guardrails);
-    if (section.steps) parts.push(section.steps);
-    if (section.references) parts.push(section.references);
-    return parts.join('\n\n');
+    if (!b) return null;
+    return renderDocCommon(b);
   } catch {
     return null;
   }

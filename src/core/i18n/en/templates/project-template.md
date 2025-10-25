@@ -1,7 +1,7 @@
 # Project Context
 
 ## Purpose
-[Describe your project\'s purpose and goals]
+[Describe your project's purpose and goals]
 
 ## Tech Stack
 - [List your primary technologies]
