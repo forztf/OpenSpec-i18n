@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-describe('spec command', () => {
+describe('规范命令', () => {
   const projectRoot = process.cwd();
   const testDir = path.join(projectRoot, 'test-spec-command-tmp');
   const specsDir = path.join(testDir, 'openspec', 'specs');
@@ -54,8 +54,8 @@ The system SHALL process credit card payments securely`;
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  describe('spec show', () => {
-    it('should display spec in text format', () => {
+  describe('规范显示', () => {
+    it('应以文本格式显示规范', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -71,7 +71,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should output spec as JSON with --json flag', () => {
+    it('应使用--json标志将规范输出为JSON格式', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -90,7 +90,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should filter to show only requirements with --requirements flag (JSON only)', () => {
+    it('应使用--requirements标志仅显示需求（仅JSON）', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -107,7 +107,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should exclude scenarios with --no-scenarios flag (JSON only)', () => {
+    it('应使用--no-scenarios标志排除场景（仅JSON）', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -123,7 +123,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should show specific requirement with -r flag (JSON only)', () => {
+    it('应使用-r标志显示特定需求（仅JSON）', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -139,7 +139,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should return JSON with filtered requirements', () => {
+    it('应返回包含过滤后需求的JSON', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -156,8 +156,8 @@ The system SHALL process credit card payments securely`;
     });
   });
 
-  describe('spec list', () => {
-    it('should list all available specs (IDs only by default)', () => {
+  describe('规范列表', () => {
+    it('应列出所有可用的规范（默认仅显示ID）', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -174,7 +174,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should output spec list as JSON with --json flag', () => {
+    it('应使用--json标志将规范列表输出为JSON格式', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -193,8 +193,8 @@ The system SHALL process credit card payments securely`;
     });
   });
 
-  describe('spec validate', () => {
-    it('should validate a valid spec', () => {
+  describe('规范验证', () => {
+    it('应验证有效规范', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -208,7 +208,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should output validation report as JSON with --json flag', () => {
+    it('应使用--json标志将验证报告输出为JSON格式', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -227,7 +227,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should validate with strict mode', () => {
+    it('应使用严格模式进行验证', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -243,7 +243,7 @@ The system SHALL process credit card payments securely`;
       }
     });
 
-    it('should detect invalid spec structure', async () => {
+    it('应检测无效的规范结构', async () => {
       const invalidSpec = `## Purpose
 
 ## Requirements
@@ -273,8 +273,8 @@ This section has no actual requirements`;
     });
   });
 
-  describe('error handling', () => {
-    it('should handle non-existent spec gracefully', () => {
+  describe('错误处理', () => {
+    it('应优雅地处理不存在的规范', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);
@@ -296,7 +296,7 @@ This section has no actual requirements`;
       }
     });
 
-    it('should handle missing specs directory gracefully', async () => {
+    it('应优雅地处理缺失的规范目录', async () => {
       await fs.rm(specsDir, { recursive: true, force: true });
       const originalCwd = process.cwd();
       try {
@@ -308,7 +308,7 @@ This section has no actual requirements`;
       }
     });
 
-    it('should honor --no-color (no ANSI escapes)', () => {
+    it('应遵守--no-color（无ANSI转义）', () => {
       const originalCwd = process.cwd();
       try {
         process.chdir(testDir);

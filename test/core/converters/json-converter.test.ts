@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { JsonConverter } from '../../../src/core/converters/json-converter.js';
 
-describe('JsonConverter', () => {
+describe('JSON转换器', () => {
   const testDir = path.join(process.cwd(), 'test-json-converter-tmp');
   const converter = new JsonConverter();
   
@@ -15,8 +15,8 @@ describe('JsonConverter', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  describe('convertSpecToJson', () => {
-    it('should convert a spec to JSON format', async () => {
+  describe('转换规范为JSON', () => {
+    it('应将规范转换为JSON格式', async () => {
       const specContent = `# User Authentication Spec
 
 ## Purpose
@@ -47,7 +47,7 @@ Then they are authenticated`;
       expect(parsed.metadata.sourcePath).toBe(specPath);
     });
 
-    it('should extract spec name from directory structure', async () => {
+    it('应从目录结构中提取规范名称', async () => {
       const specsDir = path.join(testDir, 'specs', 'user-auth');
       await fs.mkdir(specsDir, { recursive: true });
       
@@ -75,8 +75,8 @@ Then authenticated`;
     });
   });
 
-  describe('convertChangeToJson', () => {
-    it('should convert a change to JSON format', async () => {
+  describe('转换变为JSON', () => {
+    it('应将变更转换为JSON格式', async () => {
       const changeContent = `# Add User Authentication
 
 ## Why
@@ -102,7 +102,7 @@ We need to implement user authentication to secure the application and protect u
       expect(parsed.metadata.sourcePath).toBe(changePath);
     });
 
-    it('should extract change name from directory structure', async () => {
+    it('应从目录结构中提取变更名称', async () => {
       const changesDir = path.join(testDir, 'changes', 'add-auth');
       await fs.mkdir(changesDir, { recursive: true });
       
@@ -124,8 +124,8 @@ We need authentication for security reasons and to protect user data properly.
     });
   });
 
-  describe('JSON formatting', () => {
-    it('should produce properly formatted JSON with indentation', async () => {
+  describe('JSON格式化', () => {
+    it('应生成格式正确的带缩进的JSON', async () => {
       const specContent = `# Test
 
 ## Purpose
@@ -154,7 +154,7 @@ Then result`;
       expect(() => JSON.parse(json)).not.toThrow();
     });
 
-    it('should handle special characters in content', async () => {
+    it('应处理内容中的特殊字符', async () => {
       const specContent = `# Test
 
 ## Purpose

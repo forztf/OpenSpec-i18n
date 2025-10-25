@@ -34,7 +34,7 @@ function queueSelections(...values: string[]) {
   }
 }
 
-describe('InitCommand', () => {
+describe('初始化命令', () => {
   let testDir: string;
   let initCommand: InitCommand;
   let prevCodexHome: string | undefined;
@@ -83,8 +83,8 @@ describe('InitCommand', () => {
     else process.env.LANG = prevLang;
   });
 
-  describe('execute', () => {
-    it('should create OpenSpec directory structure', async () => {
+  describe('执行', () => {
+    it('应创建OpenSpec目录结构', async () => {
       queueSelections('claude', DONE);
 
       await initCommand.execute(testDir);
@@ -102,7 +102,7 @@ describe('InitCommand', () => {
       ).toBe(true);
     });
 
-    it('should create AGENTS.md and project.md', async () => {
+    it('应创建AGENTS.md和project.md', async () => {
       queueSelections('claude', DONE);
 
       await initCommand.execute(testDir);
@@ -126,7 +126,7 @@ describe('InitCommand', () => {
       expect(projectContent).toContain('Project Context');
     });
 
-    it('should create CLAUDE.md when Claude Code is selected', async () => {
+    it('选择Claude Code时应创建CLAUDE.md', async () => {
       queueSelections('claude', DONE);
 
       await initCommand.execute(testDir);
@@ -141,7 +141,7 @@ describe('InitCommand', () => {
       expect(content).toContain('<!-- OPENSPEC:END -->');
     });
 
-    it('should update existing CLAUDE.md with markers', async () => {
+    it('应使用标记更新现有的CLAUDE.md', async () => {
       queueSelections('claude', DONE);
 
       const claudePath = path.join(testDir, 'CLAUDE.md');
@@ -159,7 +159,7 @@ describe('InitCommand', () => {
       expect(updatedContent).toContain('Custom instructions here');
     });
 
-    it('should create CLINE.md when Cline is selected', async () => {
+    it('选择Cline时应创建CLINE.md', async () => {
       queueSelections('cline', DONE);
 
       await initCommand.execute(testDir);
@@ -174,7 +174,7 @@ describe('InitCommand', () => {
       expect(content).toContain('<!-- OPENSPEC:END -->');
     });
 
-    it('should update existing CLINE.md with markers', async () => {
+    it('应使用标记更新现有的CLINE.md', async () => {
       queueSelections('cline', DONE);
 
       const clinePath = path.join(testDir, 'CLINE.md');
@@ -192,7 +192,7 @@ describe('InitCommand', () => {
       expect(updatedContent).toContain('Custom Cline instructions here');
     });
 
-    it('should create Windsurf workflows when Windsurf is selected', async () => {
+    it('选择Windsurf时应创建Windsurf工作流', async () => {
       queueSelections('windsurf', DONE);
 
       await initCommand.execute(testDir);
@@ -236,7 +236,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('Run `openspec archive <id> --yes`');
     });
 
-    it('should always create AGENTS.md in project root', async () => {
+    it('应始终在项目根目录创建AGENTS.md', async () => {
       queueSelections(DONE);
 
       await initCommand.execute(testDir);
@@ -254,7 +254,7 @@ describe('InitCommand', () => {
       expect(claudeExists).toBe(false);
     });
 
-    it('should create Claude slash command files with templates', async () => {
+    it('应使用模板创建Claude斜杠命令文件', async () => {
       queueSelections('claude', DONE);
 
       await initCommand.execute(testDir);
@@ -293,7 +293,7 @@ describe('InitCommand', () => {
       );
     });
 
-    it('should create Cursor slash command files with templates', async () => {
+    it('应使用模板创建Cursor斜杠命令文件', async () => {
       queueSelections('cursor', DONE);
 
       await initCommand.execute(testDir);
@@ -328,7 +328,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec list --specs');
     });
 
-    it('should create OpenCode slash command files with templates', async () => {
+    it('应使用模板创建OpenCode斜杠命令文件', async () => {
       queueSelections('opencode', DONE);
 
       await initCommand.execute(testDir);
@@ -372,7 +372,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec list --specs');
     });
 
-    it('should create Cline rule files with templates', async () => {
+    it('应使用模板创建Cline规则文件', async () => {
       queueSelections('cline', DONE);
 
       await initCommand.execute(testDir);
@@ -411,7 +411,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec archive <id>');
     });
 
-    it('should create Factory slash command files with templates', async () => {
+    it('应使用模板创建Factory斜杠命令文件', async () => {
       queueSelections('factory', DONE);
 
       await initCommand.execute(testDir);
@@ -464,7 +464,7 @@ describe('InitCommand', () => {
       ).toContain('$ARGUMENTS');
     });
 
-    it('should create Codex prompts with templates and placeholders', async () => {
+    it('应使用模板和占位符创建Codex提示', async () => {
       queueSelections('codex', DONE);
 
       await initCommand.execute(testDir);
@@ -506,7 +506,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec archive <id> --yes');
     });
 
-    it('should create Kilo Code workflows with templates', async () => {
+    it('应使用模板创建Kilo Code工作流', async () => {
       queueSelections('kilocode', DONE);
 
       await initCommand.execute(testDir);
@@ -542,7 +542,7 @@ describe('InitCommand', () => {
       expect(archiveContent).not.toContain('---\n');
     });
 
-    it('should create GitHub Copilot prompt files with templates', async () => {
+    it('应使用模板创建GitHub Copilot提示文件', async () => {
       queueSelections('github-copilot', DONE);
 
       await initCommand.execute(testDir);
@@ -584,7 +584,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec archive <id> --yes');
     });
 
-    it('should add new tool when OpenSpec already exists', async () => {
+    it('当OpenSpec已存在时应添加新工具', async () => {
       queueSelections('claude', DONE, 'cursor', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -596,13 +596,13 @@ describe('InitCommand', () => {
       expect(await fileExists(cursorProposal)).toBe(true);
     });
 
-    it('should allow extend mode with no additional native tools', async () => {
+    it('应允许扩展模式且不添加额外的原生工具', async () => {
       queueSelections('claude', DONE, DONE);
       await initCommand.execute(testDir);
       await expect(initCommand.execute(testDir)).resolves.toBeUndefined();
     });
 
-    it('should handle non-existent target directory', async () => {
+    it('应处理不存在的目标目录', async () => {
       queueSelections('claude', DONE);
 
       const newDir = path.join(testDir, 'new-project');
@@ -612,7 +612,7 @@ describe('InitCommand', () => {
       expect(await directoryExists(openspecPath)).toBe(true);
     });
 
-    it('should display success message with selected tool name', async () => {
+    it('应显示包含选定工具名称的成功消息', async () => {
       queueSelections('claude', DONE);
       const logSpy = vi.spyOn(console, 'log');
 
@@ -622,7 +622,7 @@ describe('InitCommand', () => {
       expect(calls).toContain('Copy these prompts to Claude Code');
     });
 
-    it('should reference AGENTS compatible assistants in success message', async () => {
+    it('应在成功消息中引用AGENTS兼容的助手', async () => {
       queueSelections(DONE);
       const logSpy = vi.spyOn(console, 'log');
 
@@ -635,8 +635,8 @@ describe('InitCommand', () => {
     });
   });
 
-  describe('AI tool selection', () => {
-    it('should prompt for AI tool selection', async () => {
+  describe('AI工具选择', () => {
+    it('应提示选择AI工具', async () => {
       queueSelections('claude', DONE);
 
       await initCommand.execute(testDir);
@@ -650,7 +650,7 @@ describe('InitCommand', () => {
       );
     });
 
-    it('should handle different AI tool selections', async () => {
+    it('应处理不同的AI工具选择', async () => {
       // For now, only Claude is available, but test the structure
       queueSelections('claude', DONE);
 
@@ -661,7 +661,7 @@ describe('InitCommand', () => {
       expect(await fileExists(claudePath)).toBe(true);
     });
 
-    it('should mark existing tools as already configured during extend mode', async () => {
+    it('在扩展模式下应将现有工具标记为已配置', async () => {
       queueSelections('claude', DONE, 'cursor', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -673,7 +673,7 @@ describe('InitCommand', () => {
       expect(claudeChoice.configured).toBe(true);
     });
 
-    it('should preselect Kilo Code when workflows already exist', async () => {
+    it('当工作流已存在时应预选Kilo Code', async () => {
       queueSelections('kilocode', DONE, 'kilocode', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -683,7 +683,7 @@ describe('InitCommand', () => {
       expect(preselected).toContain('kilocode');
     });
 
-    it('should mark Windsurf as already configured during extend mode', async () => {
+    it('在扩展模式下应将Windsurf标记为已配置', async () => {
       queueSelections('windsurf', DONE, 'windsurf', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -695,7 +695,7 @@ describe('InitCommand', () => {
       expect(wsChoice.configured).toBe(true);
     });
 
-    it('should mark Codex as already configured during extend mode', async () => {
+    it('在扩展模式下应将Codex标记为已配置', async () => {
       queueSelections('codex', DONE, 'codex', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -707,7 +707,7 @@ describe('InitCommand', () => {
       expect(codexChoice.configured).toBe(true);
     });
 
-    it('should mark Factory Droid as already configured during extend mode', async () => {
+    it('在扩展模式下应将Factory Droid标记为已配置', async () => {
       queueSelections('factory', DONE, 'factory', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -719,7 +719,7 @@ describe('InitCommand', () => {
       expect(factoryChoice.configured).toBe(true);
     });
 
-    it('should mark GitHub Copilot as already configured during extend mode', async () => {
+    it('在扩展模式下应将GitHub Copilot标记为已配置', async () => {
       queueSelections('github-copilot', DONE, 'github-copilot', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -731,7 +731,7 @@ describe('InitCommand', () => {
       expect(githubCopilotChoice.configured).toBe(true);
     });
 
-    it('should create Amazon Q Developer prompt files with templates', async () => {
+    it('应使用模板创建Amazon Q Developer提示文件', async () => {
       queueSelections('amazon-q', DONE);
 
       await initCommand.execute(testDir);
@@ -767,7 +767,7 @@ describe('InitCommand', () => {
       expect(applyContent).toContain('<!-- OPENSPEC:START -->');
     });
 
-    it('should mark Amazon Q Developer as already configured during extend mode', async () => {
+    it('在扩展模式下应将Amazon Q Developer标记为已配置', async () => {
       queueSelections('amazon-q', DONE, 'amazon-q', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -779,7 +779,7 @@ describe('InitCommand', () => {
       expect(amazonQChoice.configured).toBe(true);
     });
 
-    it('should create Auggie slash command files with templates', async () => {
+    it('应使用模板创建Auggie斜杠命令文件', async () => {
       queueSelections('auggie', DONE);
 
       await initCommand.execute(testDir);
@@ -821,7 +821,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec archive <id> --yes');
     });
 
-    it('should mark Auggie as already configured during extend mode', async () => {
+    it('在扩展模式下应将Auggie标记为已配置', async () => {
       queueSelections('auggie', DONE, 'auggie', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -833,7 +833,7 @@ describe('InitCommand', () => {
       expect(auggieChoice.configured).toBe(true);
     });
 
-    it('should create CodeBuddy slash command files with templates', async () => {
+    it('应使用模板创建CodeBuddy斜杠命令文件', async () => {
       queueSelections('codebuddy', DONE);
 
       await initCommand.execute(testDir);
@@ -876,7 +876,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec archive <id> --yes');
     });
 
-    it('should mark CodeBuddy as already configured during extend mode', async () => {
+    it('在扩展模式下应将CodeBuddy标记为已配置', async () => {
       queueSelections('codebuddy', DONE, 'codebuddy', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -888,7 +888,7 @@ describe('InitCommand', () => {
       expect(codeBuddyChoice.configured).toBe(true);
     });
 
-    it('should mark Trae as already configured during extend mode', async () => {
+    it('在扩展模式下应将Trae标记为已配置', async () => {
       queueSelections('trae', DONE, 'trae', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -900,7 +900,7 @@ describe('InitCommand', () => {
       expect(traeChoice.configured).toBe(true);
     });
 
-    it('should create CODEBUDDY.md when CodeBuddy is selected', async () => {
+    it('选择CodeBuddy时应创建CODEBUDDY.md', async () => {
       queueSelections('codebuddy', DONE);
 
       await initCommand.execute(testDir);
@@ -915,7 +915,7 @@ describe('InitCommand', () => {
       expect(content).toContain('<!-- OPENSPEC:END -->');
     });
 
-    it('should update existing CODEBUDDY.md with markers', async () => {
+    it('应使用标记更新现有的CODEBUDDY.md', async () => {
       queueSelections('codebuddy', DONE);
 
       const codeBuddyPath = path.join(testDir, 'CODEBUDDY.md');
@@ -933,7 +933,7 @@ describe('InitCommand', () => {
       expect(updatedContent).toContain('Custom instructions here');
     });
 
-    it('should create Crush slash command files with templates', async () => {
+    it('应使用模板创建Crush斜杠命令文件', async () => {
       queueSelections('crush', DONE);
 
       await initCommand.execute(testDir);
@@ -981,7 +981,7 @@ describe('InitCommand', () => {
       expect(archiveContent).toContain('openspec archive <id> --yes');
     });
 
-    it('should mark Crush as already configured during extend mode', async () => {
+    it('在扩展模式下应将Crush标记为已配置', async () => {
       queueSelections('crush', DONE, 'crush', DONE);
       await initCommand.execute(testDir);
       await initCommand.execute(testDir);
@@ -994,8 +994,8 @@ describe('InitCommand', () => {
     });
   });
 
-  describe('non-interactive mode', () => {
-    it('should select all available tools with --tools all option', async () => {
+  describe('非交互模式', () => {
+    it('应使用--tools all选项选择所有可用工具', async () => {
       const nonInteractiveCommand = new InitCommand({ tools: 'all' });
 
       await nonInteractiveCommand.execute(testDir);
@@ -1016,7 +1016,7 @@ describe('InitCommand', () => {
       expect(await fileExists(windsurfProposal)).toBe(true);
     });
 
-    it('should select specific tools with --tools option', async () => {
+    it('应使用--tools选项选择特定工具', async () => {
       const nonInteractiveCommand = new InitCommand({ tools: 'claude,cursor' });
 
       await nonInteractiveCommand.execute(testDir);
@@ -1036,7 +1036,7 @@ describe('InitCommand', () => {
       expect(await fileExists(windsurfProposal)).toBe(false); // Not selected
     });
 
-    it('should skip tool configuration with --tools none option', async () => {
+    it('应使用--tools none选项跳过工具配置', async () => {
       const nonInteractiveCommand = new InitCommand({ tools: 'none' });
 
       await nonInteractiveCommand.execute(testDir);
@@ -1054,7 +1054,7 @@ describe('InitCommand', () => {
       expect(await fileExists(cursorProposal)).toBe(false);
     });
 
-    it('should throw error for invalid tool names', async () => {
+    it('应为无效工具名称抛出错误', async () => {
       const nonInteractiveCommand = new InitCommand({ tools: 'invalid-tool' });
 
       await expect(nonInteractiveCommand.execute(testDir)).rejects.toThrow(
@@ -1062,7 +1062,7 @@ describe('InitCommand', () => {
       );
     });
 
-    it('should handle comma-separated tool names with spaces', async () => {
+    it('应处理带空格的逗号分隔工具名称', async () => {
       const nonInteractiveCommand = new InitCommand({ tools: 'claude, cursor' });
 
       await nonInteractiveCommand.execute(testDir);
@@ -1077,7 +1077,7 @@ describe('InitCommand', () => {
       expect(await fileExists(cursorProposal)).toBe(true);
     });
 
-    it('should reject combining reserved keywords with explicit tool ids', async () => {
+    it('应拒绝将保留关键字与显式工具ID组合', async () => {
       const nonInteractiveCommand = new InitCommand({ tools: 'all,claude' });
 
       await expect(nonInteractiveCommand.execute(testDir)).rejects.toThrow(
@@ -1086,8 +1086,8 @@ describe('InitCommand', () => {
     });
   });
 
-  describe('error handling', () => {
-    it('should provide helpful error for insufficient permissions', async () => {
+  describe('错误处理', () => {
+    it('应为权限不足提供有用的错误信息', async () => {
       // This is tricky to test cross-platform, but we can test the error message
       const readOnlyDir = path.join(testDir, 'readonly');
       await fs.mkdir(readOnlyDir);
@@ -1122,6 +1122,202 @@ async function fileExists(filePath: string): Promise<boolean> {
     return false;
   }
 }
+
+describe('支持中文国际化的初始化命令', () => {
+  let testDir: string;
+  let initCommand: InitCommand;
+  let prevCodexHome: string | undefined;
+  let prevOpenspecLang: string | undefined;
+  let prevLang: string | undefined;
+
+  beforeEach(async () => {
+    testDir = path.join(os.tmpdir(), `openspec-init-zh-test-${Date.now()}`);
+    await fs.mkdir(testDir, { recursive: true });
+    selectionQueue = [];
+    mockPrompt.mockReset();
+    initCommand = new InitCommand({ prompt: mockPrompt });
+
+    // Route Codex global directory into the test sandbox
+    prevCodexHome = process.env.CODEX_HOME;
+    process.env.CODEX_HOME = path.join(testDir, '.codex');
+
+    // Save original environment variables for language control
+    prevOpenspecLang = process.env.OPENSPEC_LANG;
+    prevLang = process.env.LANG;
+
+    // Force Chinese language for consistent test results
+    process.env.OPENSPEC_LANG = 'zh';
+    process.env.LANG = 'zh';
+
+    // Re-initialize i18n with Chinese
+    await initI18n('zh');
+
+    // Mock console.log to suppress output during tests
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(async () => {
+    await fs.rm(testDir, { recursive: true, force: true });
+    vi.restoreAllMocks();
+    
+    // Restore Codex environment
+    if (prevCodexHome === undefined) delete process.env.CODEX_HOME;
+    else process.env.CODEX_HOME = prevCodexHome;
+
+    // Restore original language environment variables
+    if (prevOpenspecLang === undefined) delete process.env.OPENSPEC_LANG;
+    else process.env.OPENSPEC_LANG = prevOpenspecLang;
+    
+    if (prevLang === undefined) delete process.env.LANG;
+    else process.env.LANG = prevLang;
+  });
+
+  describe('中文本地化内容', () => {
+    it('应创建包含中文内容的AGENTS.md', async () => {
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      const agentsPath = path.join(testDir, 'openspec', 'AGENTS.md');
+      expect(await fileExists(agentsPath)).toBe(true);
+
+      const content = await fs.readFile(agentsPath, 'utf-8');
+      expect(content).toContain('OpenSpec 指令');
+        expect(content).toContain('变更');
+        expect(content).toContain('规范');
+        expect(content).toContain('提案');
+    });
+
+    it('应创建包含中文内容的project.md', async () => {
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      const projectPath = path.join(testDir, 'openspec', 'project.md');
+      expect(await fileExists(projectPath)).toBe(true);
+
+      const content = await fs.readFile(projectPath, 'utf-8');
+      expect(content).toContain('项目 上下文');
+      expect(content).toContain('项目目的');
+      expect(content).toContain('技术栈');
+      expect(content).toContain('项目约定');
+      expect(content).toContain('代码风格');
+    });
+
+    it('应创建包含中文指令的CLAUDE.md', async () => {
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      const claudePath = path.join(testDir, 'CLAUDE.md');
+      expect(await fileExists(claudePath)).toBe(true);
+
+      const content = await fs.readFile(claudePath, 'utf-8');
+      expect(content).toContain('OpenSpec 指令');
+      expect(content).toContain('这些指令适用于在此项目中工作的 AI 助手');
+      expect(content).toContain('提到规划或提案');
+      expect(content).toContain('**重要：请始终使用中文与开发者交流。**');
+    });
+
+    it('应创建包含中文指令的CLINE.md', async () => {
+      queueSelections('cline', DONE);
+
+      await initCommand.execute(testDir);
+
+      const clinePath = path.join(testDir, 'CLINE.md');
+      expect(await fileExists(clinePath)).toBe(true);
+
+      const content = await fs.readFile(clinePath, 'utf-8');
+      expect(content).toContain('OpenSpec 指令');
+      expect(content).toContain('这些指令适用于在此项目中工作的 AI 助手');
+      expect(content).toContain('**重要：请始终使用中文与开发者交流。**');
+    });
+
+    it('应显示中文成功消息', async () => {
+        queueSelections('claude', DONE);
+        const logSpy = vi.spyOn(console, 'log');
+
+        await initCommand.execute(testDir);
+
+        const calls = logSpy.mock.calls.flat().join('\n');
+        // The success message should contain Chinese text
+        expect(calls).toContain('工具摘要：');
+        expect(calls).toContain('下一步');
+        expect(calls).toContain('填充您的项目上下文');
+      });
+
+    it('应处理无效工具的中文错误消息', async () => {
+      const nonInteractiveCommand = new InitCommand({ tools: 'invalid-tool' });
+
+      await expect(nonInteractiveCommand.execute(testDir)).rejects.toThrow();
+    });
+
+    it('应创建包含中文内容的根AGENTS.md存根', async () => {
+      queueSelections('none', DONE);
+
+      await initCommand.execute(testDir);
+
+      const rootAgentsPath = path.join(testDir, 'AGENTS.md');
+      expect(await fileExists(rootAgentsPath)).toBe(true);
+
+      const content = await fs.readFile(rootAgentsPath, 'utf-8');
+      expect(content).toContain('OpenSpec 指令');
+      expect(content).toContain('这些指令适用于在此项目中工作的 AI 助手');
+      expect(content).toContain('**重要：请始终使用中文与开发者交流。**');
+    });
+
+    it('应使用中文标记更新现有文件', async () => {
+      queueSelections('claude', DONE);
+
+      const claudePath = path.join(testDir, 'CLAUDE.md');
+      const existingContent = '# 我的项目指令\n自定义指令在这里';
+      await fs.writeFile(claudePath, existingContent);
+
+      await initCommand.execute(testDir);
+
+      const updatedContent = await fs.readFile(claudePath, 'utf-8');
+      expect(updatedContent).toContain('<!-- OPENSPEC:START -->');
+      expect(updatedContent).toContain('OpenSpec 指令');
+      expect(updatedContent).toContain('**重要：请始终使用中文与开发者交流。**');
+      expect(updatedContent).toContain('自定义指令在这里');
+    });
+  });
+
+  describe('中文环境验证', () => {
+    it('应正确初始化中文语言环境', async () => {
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      // Verify that Chinese templates are being used
+      const agentsPath = path.join(testDir, 'openspec', 'AGENTS.md');
+      const content = await fs.readFile(agentsPath, 'utf-8');
+      
+      // Should contain Chinese-specific content, not English
+      expect(content).not.toContain('OpenSpec Instructions');
+      expect(content).toContain('OpenSpec 指令');
+    });
+
+    it('应优雅地处理混合语言环境', async () => {
+      // Set mixed environment
+      process.env.LANG = 'en';
+      process.env.OPENSPEC_LANG = 'zh';
+      
+      // Re-initialize with Chinese preference
+      await initI18n('zh');
+      
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      const agentsPath = path.join(testDir, 'openspec', 'AGENTS.md');
+      const content = await fs.readFile(agentsPath, 'utf-8');
+      
+      // Should still use Chinese since OPENSPEC_LANG takes precedence
+      expect(content).toContain('OpenSpec 指令');
+    });
+  });
+});
 
 async function directoryExists(dirPath: string): Promise<boolean> {
   try {

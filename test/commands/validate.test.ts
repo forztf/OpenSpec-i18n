@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { runCLI } from '../helpers/run-cli.js';
 
-describe('top-level validate command', () => {
+describe('顶层验证命令', () => {
   const projectRoot = process.cwd();
   const testDir = path.join(projectRoot, 'test-validate-command-tmp');
   const changesDir = path.join(testDir, 'openspec', 'changes');
@@ -63,13 +63,13 @@ describe('top-level validate command', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  it('prints a helpful hint when no args in non-interactive mode', async () => {
+  it('无参数且非交互模式时打印有用提示', async () => {
     const result = await runCLI(['validate'], { cwd: testDir });
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('Nothing to validate. Try one of:');
   });
 
-  it('validates all with --all and outputs JSON summary', async () => {
+  it('使用--all验证所有项并输出JSON摘要', async () => {
     const result = await runCLI(['validate', '--all', '--json'], { cwd: testDir });
     expect(result.exitCode).toBe(0);
     const output = result.stdout.trim();
@@ -80,7 +80,7 @@ describe('top-level validate command', () => {
     expect(json.version).toBe('1.0');
   });
 
-  it('validates only specs with --specs and respects --concurrency', async () => {
+  it('仅使用--specs验证规范并遵守--concurrency', async () => {
     const result = await runCLI(['validate', '--specs', '--json', '--concurrency', '1'], { cwd: testDir });
     expect(result.exitCode).toBe(0);
     const output = result.stdout.trim();
@@ -89,13 +89,13 @@ describe('top-level validate command', () => {
     expect(json.items.every((i: any) => i.type === 'spec')).toBe(true);
   });
 
-  it('errors on ambiguous item names and suggests type override', async () => {
+  it('在项目名称歧义时出错并建议类型覆盖', async () => {
     const result = await runCLI(['validate', 'dup'], { cwd: testDir });
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain('Ambiguous item');
   });
 
-  it('accepts change proposals saved with CRLF line endings', async () => {
+  it('接受以CRLF行结束符保存的变更提案', async () => {
     const changeId = 'crlf-change';
     const toCrlf = (segments: string[]) => segments.join('\n').replace(/\n/g, '\r\n');
 

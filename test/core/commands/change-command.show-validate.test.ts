@@ -4,7 +4,7 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import os from 'os';
 
-describe('ChangeCommand.show/validate', () => {
+describe('变更命令.显示/验证', () => {
   let cmd: ChangeCommand;
   let changeName: string;
   let tempRoot: string;
@@ -27,7 +27,7 @@ describe('ChangeCommand.show/validate', () => {
     await fs.rm(tempRoot, { recursive: true, force: true });
   });
 
-  it('show --json prints JSON including deltas', async () => {
+  it('show --json打印包含增量的JSON', async () => {
     const logs: string[] = [];
     const origLog = console.log;
     try {
@@ -46,7 +46,7 @@ describe('ChangeCommand.show/validate', () => {
     }
   });
 
-  it('error when no change specified: prints available IDs', async () => {
+  it('未指定变更时出错：打印可用ID', async () => {
     const logsErr: string[] = [];
     const origErr = console.error;
     try {
@@ -65,7 +65,7 @@ describe('ChangeCommand.show/validate', () => {
     }
   });
 
-  it('show --json --requirements-only returns minimal object with deltas (deprecated alias)', async () => {
+  it('show --json --requirements-only返回包含增量的最小对象（已弃用别名）', async () => {
     const logs: string[] = [];
     const origLog = console.log;
     try {
@@ -89,7 +89,7 @@ describe('ChangeCommand.show/validate', () => {
     }
   });
 
-  it('validate --strict --json returns a report with valid boolean', async () => {
+  it('validate --strict --json返回包含有效布尔值的报告', async () => {
     const logs: string[] = [];
     const origLog = console.log;
     try {

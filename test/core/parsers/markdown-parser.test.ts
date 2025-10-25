@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { MarkdownParser } from '../../../src/core/parsers/markdown-parser.js';
 
-describe('MarkdownParser', () => {
-  describe('parseSpec', () => {
-    it('should parse a valid spec', () => {
+describe('Markdown解析器', () => {
+  describe('解析规范', () => {
+    it('应解析有效规范', () => {
       const content = `# User Authentication Spec
 
 ## Purpose
@@ -44,7 +44,7 @@ Then they see an error message`;
       expect(scenario.rawText).toContain('Then they are authenticated');
     });
 
-    it('should handle multi-line scenarios', () => {
+    it('应处理多行场景', () => {
       const content = `# Test Spec
 
 ## Purpose
@@ -77,7 +77,7 @@ Then they are authenticated
       expect(scenario.rawText).toContain('and see a maintenance warning');
     });
 
-    it('should throw error for missing overview', () => {
+    it('应为缺失概述抛出错误', () => {
       const content = `# Test Spec
 
 ## Requirements
@@ -93,7 +93,7 @@ Then result`;
       expect(() => parser.parseSpec('test')).toThrow('must have a Purpose section');
     });
 
-    it('should throw error for missing requirements', () => {
+    it('应为缺失需求抛出错误', () => {
       const content = `# Test Spec
 
 ## Purpose
@@ -104,8 +104,8 @@ This is a test spec`;
     });
   });
 
-  describe('parseChange', () => {
-    it('should parse a valid change', () => {
+  describe('解析变更', () => {
+    it('应解析有效变更', () => {
       const content = `# Add User Authentication
 
 ## Why
@@ -135,7 +135,7 @@ We need to implement user authentication to secure the application and protect u
       expect(change.deltas[2].operation).toBe('REMOVED');
     });
 
-    it('should throw error for missing why section', () => {
+    it('应为缺失why部分抛出错误', () => {
       const content = `# Test Change
 
 ## What Changes
@@ -145,7 +145,7 @@ We need to implement user authentication to secure the application and protect u
       expect(() => parser.parseChange('test')).toThrow('must have a Why section');
     });
 
-    it('should throw error for missing what changes section', () => {
+    it('应为缺失变更部分抛出错误', () => {
       const content = `# Test Change
 
 ## Why
@@ -155,7 +155,7 @@ Because we need it`;
       expect(() => parser.parseChange('test')).toThrow('must have a What Changes section');
     });
 
-    it('should handle changes without deltas', () => {
+    it('应处理无增量的变更', () => {
       const content = `# Test Change
 
 ## Why
@@ -170,7 +170,7 @@ Some general description of changes without specific deltas`;
       expect(change.deltas).toHaveLength(0);
     });
 
-    it('parses change documents saved with CRLF line endings', () => {
+    it('解析以CRLF行结束符保存的变更文档', () => {
       const crlfContent = [
         '# CRLF Change',
         '',
@@ -190,8 +190,8 @@ Some general description of changes without specific deltas`;
     });
   });
 
-  describe('section parsing', () => {
-    it('should handle nested sections correctly', () => {
+  describe('章节解析', () => {
+    it('应正确处理嵌套部分', () => {
       const content = `# Test Spec
 
 ## Purpose
@@ -222,7 +222,7 @@ Then success`;
       expect(spec.requirements).toHaveLength(2);
     });
 
-    it('should preserve content between headers', () => {
+    it('应保留标题间的内容', () => {
       const content = `# Test
 
 ## Purpose
@@ -243,7 +243,7 @@ Content for requirement 1`;
       expect(spec.overview).toContain('more content');
     });
 
-    it('should use requirement heading as fallback when no content is provided', () => {
+    it('当未提供内容时应使用需求标题作为后备', () => {
       const content = `# Test Spec
 
 ## Purpose
@@ -264,7 +264,7 @@ Then result`;
       expect(spec.requirements[0].text).toBe('The system SHALL use heading text when no content');
     });
 
-    it('should extract requirement text from first non-empty content line', () => {
+    it('应从第一个非空内容行提取需求文本', () => {
       const content = `# Test Spec
 
 ## Purpose

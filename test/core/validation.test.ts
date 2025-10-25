@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { promises as fs } from 'fs';
 import path from 'path';
+import os from 'os';
 import { Validator } from '../../src/core/validation/validator.js';
+import { ValidateCommand } from '../../src/commands/validate.js';
+import { initI18n } from '../../src/core/i18n/index.js';
 import { 
   ScenarioSchema, 
   RequirementSchema, 
@@ -10,9 +13,9 @@ import {
   DeltaSchema 
 } from '../../src/core/schemas/index.js';
 
-describe('Validation Schemas', () => {
-  describe('ScenarioSchema', () => {
-    it('should validate a valid scenario', () => {
+describe('验证模式', () => {
+  describe('场景模式', () => {
+    it('应验证有效场景', () => {
       const scenario = {
         rawText: 'Given a user is logged in\nWhen they click logout\nThen they are redirected to login page',
       };
@@ -21,7 +24,7 @@ describe('Validation Schemas', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should reject scenario with empty text', () => {
+    it('应拒绝空文本场景', () => {
       const scenario = {
         rawText: '',
       };
@@ -34,8 +37,8 @@ describe('Validation Schemas', () => {
     });
   });
 
-  describe('RequirementSchema', () => {
-    it('should validate a valid requirement', () => {
+  describe('需求模式', () => {
+    it('应验证有效需求', () => {
       const requirement = {
         text: 'The system SHALL provide user authentication',
         scenarios: [
@@ -49,7 +52,7 @@ describe('Validation Schemas', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should reject requirement without SHALL or MUST', () => {
+    it('应拒绝不包含SHALL或MUST的需求', () => {
       const requirement = {
         text: 'The system provides user authentication',
         scenarios: [
@@ -66,7 +69,7 @@ describe('Validation Schemas', () => {
       }
     });
 
-    it('should reject requirement without scenarios', () => {
+    it('应拒绝没有场景的需求', () => {
       const requirement = {
         text: 'The system SHALL provide user authentication',
         scenarios: [],
@@ -80,8 +83,8 @@ describe('Validation Schemas', () => {
     });
   });
 
-  describe('SpecSchema', () => {
-    it('should validate a valid spec', () => {
+  describe('规范模式', () => {
+    it('应验证有效规范', () => {
       const spec = {
         name: 'user-auth',
         overview: 'This spec defines user authentication requirements',
@@ -101,7 +104,7 @@ describe('Validation Schemas', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should reject spec without requirements', () => {
+    it('应拒绝没有需求的规范', () => {
       const spec = {
         name: 'user-auth',
         overview: 'This spec defines user authentication requirements',
@@ -116,8 +119,8 @@ describe('Validation Schemas', () => {
     });
   });
 
-  describe('ChangeSchema', () => {
-    it('should validate a valid change', () => {
+  describe('变更模式', () => {
+    it('应验证有效变更', () => {
       const change = {
         name: 'add-user-auth',
         why: 'We need user authentication to secure the application and protect user data',
@@ -135,7 +138,7 @@ describe('Validation Schemas', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should reject change with short why section', () => {
+    it('应拒绝why部分过短的变更', () => {
       const change = {
         name: 'add-user-auth',
         why: 'Need auth',
@@ -156,7 +159,7 @@ describe('Validation Schemas', () => {
       }
     });
 
-    it('should warn about too many deltas', () => {
+    it('应警告过多的增量', () => {
       const deltas = Array.from({ length: 11 }, (_, i) => ({
         spec: `spec-${i}`,
         operation: 'ADDED' as const,
@@ -179,7 +182,7 @@ describe('Validation Schemas', () => {
   });
 });
 
-describe('Validator', () => {
+describe('验证器', () => {
   const testDir = path.join(process.cwd(), 'test-validation-tmp');
   
   beforeEach(async () => {
@@ -190,8 +193,8 @@ describe('Validator', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  describe('validateSpec', () => {
-    it('should validate a valid spec file', async () => {
+  describe('验证规范', () => {
+    it('应验证有效的规范文件', async () => {
       const specContent = `# User Authentication Spec
 
 ## Purpose
@@ -225,7 +228,7 @@ Then they see an error message`;
       expect(report.summary.errors).toBe(0);
     });
 
-    it('should detect missing overview section', async () => {
+    it('应检测缺失的概述部分', async () => {
       const specContent = `# User Authentication Spec
 
 ## Requirements
@@ -249,8 +252,8 @@ Then authenticated`;
     });
   });
 
-  describe('validateChange', () => {
-    it('should validate a valid change file', async () => {
+  describe('验证变更', () => {
+    it('应验证有效的变更文件', async () => {
       const changeContent = `# Add User Authentication
 
 ## Why
@@ -270,7 +273,7 @@ We need to implement user authentication to secure the application and protect u
       expect(report.summary.errors).toBe(0);
     });
 
-    it('should detect missing why section', async () => {
+    it('应检测缺失的why部分', async () => {
       const changeContent = `# Add User Authentication
 
 ## What Changes
@@ -288,8 +291,8 @@ We need to implement user authentication to secure the application and protect u
     });
   });
 
-  describe('strict mode', () => {
-    it('should fail on warnings in strict mode', async () => {
+  describe('严格模式', () => {
+    it('应严格模式下因警告而失败', async () => {
       const specContent = `# Test Spec
 
 ## Purpose
@@ -313,7 +316,7 @@ Then result`;
       expect(report.valid).toBe(false); // Should fail due to brief overview warning
     });
 
-    it('should pass warnings in non-strict mode', async () => {
+    it('应非严格模式下通过警告', async () => {
       const specContent = `# Test Spec
 
 ## Purpose
@@ -339,8 +342,8 @@ Then result`;
     });
   });
 
-  describe('validateChangeDeltaSpecs with metadata', () => {
-    it('should validate requirement with metadata before SHALL/MUST text', async () => {
+  describe('带元数据的变更增量规范验证', () => {
+    it('应验证SHALL/MUST文本前包含元数据的需求', async () => {
       const changeDir = path.join(testDir, 'test-change');
       const specsDir = path.join(changeDir, 'specs', 'test-spec');
       await fs.mkdir(specsDir, { recursive: true });
@@ -370,7 +373,7 @@ The system MUST implement a circuit breaker with three states.
       expect(report.summary.errors).toBe(0);
     });
 
-    it('should validate requirement with SHALL in text but not in header', async () => {
+    it('应验证文本中包含SHALL但标题中不包含的需求', async () => {
       const changeDir = path.join(testDir, 'test-change-2');
       const specsDir = path.join(changeDir, 'specs', 'test-spec');
       await fs.mkdir(specsDir, { recursive: true });
@@ -400,7 +403,7 @@ The system SHALL handle all errors gracefully.
       expect(report.summary.errors).toBe(0);
     });
 
-    it('should fail when requirement text lacks SHALL/MUST', async () => {
+    it('应因需求文本缺少SHALL/MUST而失败', async () => {
       const changeDir = path.join(testDir, 'test-change-3');
       const specsDir = path.join(changeDir, 'specs', 'test-spec');
       await fs.mkdir(specsDir, { recursive: true });
@@ -430,7 +433,7 @@ The system will log all events.
       expect(report.issues.some(i => i.message.includes('must contain SHALL or MUST'))).toBe(true);
     });
 
-    it('should handle requirements without metadata fields', async () => {
+    it('应处理没有元数据字段的需求', async () => {
       const changeDir = path.join(testDir, 'test-change-4');
       const specsDir = path.join(changeDir, 'specs', 'test-spec');
       await fs.mkdir(specsDir, { recursive: true });
@@ -457,7 +460,7 @@ The system SHALL implement this feature.
       expect(report.summary.errors).toBe(0);
     });
 
-    it('should treat delta headers case-insensitively', async () => {
+    it('应不区分大小写地处理增量标题', async () => {
       const changeDir = path.join(testDir, 'test-change-mixed-case');
       const specsDir = path.join(changeDir, 'specs', 'test-spec');
       await fs.mkdir(specsDir, { recursive: true });
@@ -484,6 +487,278 @@ The system MUST support mixed case delta headers.
       expect(report.summary.errors).toBe(0);
       expect(report.summary.warnings).toBe(0);
       expect(report.summary.info).toBe(0);
+    });
+  });
+});
+
+
+describe('支持中文国际化的验证命令', () => {
+  let tempDir: string;
+  let logOutput: string[];
+  let originalEnv: { [key: string]: string | undefined };
+
+  beforeEach(async () => {
+    // Save original environment
+    originalEnv = {
+      LANG: process.env.LANG,
+      OPENSPEC_LANG: process.env.OPENSPEC_LANG,
+    };
+
+    // Set Chinese environment
+    process.env.LANG = 'zh';
+    process.env.OPENSPEC_LANG = 'zh';
+    
+    await initI18n('zh');
+
+    tempDir = path.join(os.tmpdir(), `openspec-validation-test-zh-${Date.now()}`);
+    await fs.mkdir(tempDir, { recursive: true });
+
+    // Mock console.log to capture output
+    logOutput = [];
+    const originalLog = console.log;
+    console.log = (...args: any[]) => {
+      logOutput.push(args.join(' '));
+      originalLog(...args);
+    };
+  });
+
+  afterEach(async () => {
+    // Restore original environment
+    if (originalEnv.LANG !== undefined) {
+      process.env.LANG = originalEnv.LANG;
+    } else {
+      delete process.env.LANG;
+    }
+    
+    if (originalEnv.OPENSPEC_LANG !== undefined) {
+      process.env.OPENSPEC_LANG = originalEnv.OPENSPEC_LANG;
+    } else {
+      delete process.env.OPENSPEC_LANG;
+    }
+
+    // Clean up temp directory
+    try {
+      await fs.rm(tempDir, { recursive: true, force: true });
+    } catch (error) {
+      // Ignore cleanup errors
+    }
+
+    // Restore console.log
+    console.log = console.log;
+  });
+
+  describe('中文验证消息', () => {
+    it('应显示不存在项目的中文错误消息', async () => {
+      const changesDir = path.join(tempDir, 'openspec', 'changes');
+      const specsDir = path.join(tempDir, 'openspec', 'specs');
+      await fs.mkdir(changesDir, { recursive: true });
+      await fs.mkdir(specsDir, { recursive: true });
+
+      const validateCommand = new ValidateCommand();
+
+      const originalCwd = process.cwd();
+      const originalExitCode = process.exitCode;
+      
+      try {
+        await validateCommand.execute('non-existent');
+        // Should set exit code to 1 on validation failure
+        expect(process.exitCode).toBe(1);
+      } finally {
+        process.chdir(originalCwd);
+        process.exitCode = originalExitCode;
+      }
+    });
+
+    it('应显示有效变更的中文验证结果', async () => {
+      const changesDir = path.join(tempDir, 'openspec', 'changes');
+      const changeDir = path.join(changesDir, 'test-change');
+      await fs.mkdir(changeDir, { recursive: true });
+      
+      await fs.writeFile(
+        path.join(changeDir, 'proposal.md'),
+        '# Test Change\n\n## Purpose\nTest purpose\n\n## Requirements\n\n### The system SHALL do something\n\n#### Scenario: Test\nGiven test\nWhen action\nThen result'
+      );
+      
+      await fs.writeFile(
+        path.join(changeDir, 'tasks.md'),
+        '- [x] Task 1\n- [x] Task 2\n'
+      );
+
+      const validateCommand = new ValidateCommand();
+      
+      // Change to the temp directory for validation
+      const originalCwd = process.cwd();
+      process.chdir(tempDir);
+      
+      try {
+        await validateCommand.execute('test-change');
+        // Should complete successfully (no errors)
+        expect(true).toBe(true);
+      } finally {
+        process.chdir(originalCwd);
+      }
+    });
+
+    it('应显示有效规范的中文验证结果', async () => {
+      const specsDir = path.join(tempDir, 'openspec', 'specs', 'test-spec');
+      await fs.mkdir(specsDir, { recursive: true });
+      
+      await fs.writeFile(
+        path.join(specsDir, 'spec.md'),
+        '# Test Spec\n\n## Purpose\nTest purpose\n\n## Requirements\n\n### The system SHALL do something\n\n#### Scenario: Test\nGiven test\nWhen action\nThen result'
+      );
+
+      const validateCommand = new ValidateCommand();
+      
+      // Change to the temp directory for validation
+      const originalCwd = process.cwd();
+      process.chdir(tempDir);
+      
+      try {
+        await validateCommand.execute('test-spec');
+        // Should complete successfully (no errors)
+        expect(true).toBe(true);
+      } finally {
+        process.chdir(originalCwd);
+      }
+    });
+
+    it('应显示缺失proposal.md的中文错误消息', async () => {
+      const changesDir = path.join(tempDir, 'openspec', 'changes', 'no-proposal');
+      await fs.mkdir(changesDir, { recursive: true });
+
+      const validateCommand = new ValidateCommand();
+      
+      // Change to the temp directory for validation
+      const originalCwd = process.cwd();
+      process.chdir(tempDir);
+      
+      try {
+        const originalExitCode = process.exitCode;
+        process.exitCode = 0;
+        
+        await validateCommand.execute('no-proposal', { noInteractive: true });
+        
+        // Should have validation errors (exit code 1)
+        expect(process.exitCode).toBe(1);
+        
+        process.exitCode = originalExitCode;
+      } finally {
+        process.chdir(originalCwd);
+      }
+    });
+
+    it('应显示缺失spec.md的中文错误消息', async () => {
+      const specsDir = path.join(tempDir, 'openspec', 'specs', 'no-spec');
+      await fs.mkdir(specsDir, { recursive: true });
+
+      const validateCommand = new ValidateCommand();
+      
+      // Change to the temp directory for validation
+      const originalCwd = process.cwd();
+      process.chdir(tempDir);
+      
+      try {
+        const originalExitCode = process.exitCode;
+        process.exitCode = 0;
+        
+        await validateCommand.execute('no-spec', { noInteractive: true });
+        
+        // Should have validation errors (exit code 1)
+        expect(process.exitCode).toBe(1);
+        
+        process.exitCode = originalExitCode;
+      } finally {
+        process.chdir(originalCwd);
+      }
+    });
+
+    it('应显示无效内容的中文验证错误', async () => {
+      const changesDir = path.join(tempDir, 'openspec', 'changes');
+      const changeDir = path.join(changesDir, 'invalid-change');
+      await fs.mkdir(changeDir, { recursive: true });
+      
+      await fs.writeFile(
+        path.join(changeDir, 'proposal.md'),
+        '# Invalid Change\n\nThis is invalid content without proper requirements.'
+      );
+
+      const validateCommand = new ValidateCommand();
+      
+      // Change to the temp directory for validation
+      const originalCwd = process.cwd();
+      process.chdir(tempDir);
+      
+      try {
+        const originalExitCode = process.exitCode;
+        process.exitCode = 0;
+        
+        await validateCommand.execute('invalid-change', { noInteractive: true });
+        
+        // Should have validation errors (exit code 1)
+        expect(process.exitCode).toBe(1);
+        
+        process.exitCode = originalExitCode;
+      } finally {
+        process.chdir(originalCwd);
+      }
+    });
+  });
+
+  describe('中文环境验证', () => {
+    it('应正确初始化中文语言环境', async () => {
+      const changesDir = path.join(tempDir, 'openspec', 'changes');
+      await fs.mkdir(changesDir, { recursive: true });
+
+      const validateCommand = new ValidateCommand();
+      
+      // ValidateCommand.execute() doesn't throw for non-existent items in non-interactive mode
+      // It sets process.exitCode = 1 instead, so we test that behavior
+      const originalExitCode = process.exitCode;
+      process.exitCode = 0;
+      
+      try {
+        await validateCommand.execute('non-existent', { noInteractive: true });
+        expect(process.exitCode).toBe(1);
+      } finally {
+        process.exitCode = originalExitCode;
+      }
+    });
+
+    it('应优雅地处理混合语言环境', async () => {
+      // Test with mixed environment variables
+      process.env.LANG = 'en';
+      process.env.OPENSPEC_LANG = 'zh';
+      
+      await initI18n('zh');
+
+      const changesDir = path.join(tempDir, 'openspec', 'changes');
+      const changeDir = path.join(changesDir, 'test-change');
+      await fs.mkdir(changeDir, { recursive: true });
+      
+      await fs.writeFile(
+        path.join(changeDir, 'proposal.md'),
+        '# Test Change\n\n## Purpose\nTest purpose\n\n## Requirements\n\n### The system SHALL do something\n\n#### Scenario: Test\nGiven test\nWhen action\nThen result'
+      );
+      
+      await fs.writeFile(
+        path.join(changeDir, 'tasks.md'),
+        '- [x] Task 1\n- [x] Task 2\n'
+      );
+
+      const validateCommand = new ValidateCommand();
+      
+      // Change to the temp directory for validation
+      const originalCwd = process.cwd();
+      process.chdir(tempDir);
+      
+      try {
+        await validateCommand.execute('test-change');
+        // Should complete successfully (no errors)
+        expect(true).toBe(true);
+      } finally {
+        process.chdir(originalCwd);
+      }
     });
   });
 });

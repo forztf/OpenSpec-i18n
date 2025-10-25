@@ -4,7 +4,7 @@ import path from 'path';
 import { promises as fs } from 'fs';
 import os from 'os';
 
-describe('ChangeCommand.list', () => {
+describe('变更命令.列表', () => {
   let cmd: ChangeCommand;
   let tempRoot: string;
   let originalCwd: string;
@@ -26,7 +26,7 @@ describe('ChangeCommand.list', () => {
     await fs.rm(tempRoot, { recursive: true, force: true });
   });
 
-  it('returns JSON with expected shape', async () => {
+  it('返回具有预期形状的JSON', async () => {
     // Capture console output
     const logs: string[] = [];
     const origLog = console.log;
@@ -54,7 +54,7 @@ describe('ChangeCommand.list', () => {
     }
   });
 
-  it('prints IDs by default and details with --long', async () => {
+  it('默认打印ID，使用--long时打印详细信息', async () => {
     const logs: string[] = [];
     const origLog = console.log;
     try {

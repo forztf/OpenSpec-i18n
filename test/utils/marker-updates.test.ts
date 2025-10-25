@@ -4,7 +4,7 @@ import path from 'path';
 import os from 'os';
 import { FileSystemUtils } from '../../src/utils/file-system.js';
 
-describe('FileSystemUtils.updateFileWithMarkers', () => {
+describe('文件系统工具.使用标记更新文件', () => {
   let testDir: string;
   const START_MARKER = '<!-- OPENSPEC:START -->';
   const END_MARKER = '<!-- OPENSPEC:END -->';
@@ -18,8 +18,8 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  describe('new file creation', () => {
-    it('should create new file with markers and content', async () => {
+  describe('新文件创建', () => {
+    it('应创建带标记和内容的新文件', async () => {
       const filePath = path.join(testDir, 'new-file.md');
       const content = 'OpenSpec content';
       
@@ -35,8 +35,8 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
     });
   });
 
-  describe('existing file without markers', () => {
-    it('should prepend markers and content to existing file', async () => {
+  describe('无标记的现有文件', () => {
+    it('应将标记和内容前置到现有文件', async () => {
       const filePath = path.join(testDir, 'existing.md');
       const existingContent = '# Existing Content\nUser content here';
       await fs.writeFile(filePath, existingContent);
@@ -56,8 +56,8 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
     });
   });
 
-  describe('existing file with markers', () => {
-    it('should replace content between markers', async () => {
+  describe('带标记的现有文件', () => {
+    it('应替换标记间的内容', async () => {
       const filePath = path.join(testDir, 'with-markers.md');
       const beforeContent = '# Before\nSome content before';
       const oldManagedContent = 'Old OpenSpec content';
@@ -80,7 +80,7 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
       );
     });
 
-    it('should preserve content before and after markers', async () => {
+    it('应保留标记前后的内容', async () => {
       const filePath = path.join(testDir, 'preserve.md');
       const userContentBefore = '# User Content Before\nImportant user notes';
       const userContentAfter = '## User Content After\nMore user notes';
@@ -103,7 +103,7 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
       expect(result).not.toContain('Old content');
     });
 
-    it('should handle markers at the beginning of file', async () => {
+    it('应处理文件开头的标记', async () => {
       const filePath = path.join(testDir, 'markers-at-start.md');
       const afterContent = 'User content after markers';
       
@@ -122,7 +122,7 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
       expect(result).toBe(`${START_MARKER}\n${newContent}\n${END_MARKER}\n${afterContent}`);
     });
 
-    it('should handle markers at the end of file', async () => {
+    it('应处理文件末尾的标记', async () => {
       const filePath = path.join(testDir, 'markers-at-end.md');
       const beforeContent = 'User content before markers';
       
@@ -142,8 +142,8 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
     });
   });
 
-  describe('invalid marker states', () => {
-    it('should throw error if only start marker exists', async () => {
+  describe('无效标记状态', () => {
+    it('仅存在开始标记时应抛出错误', async () => {
       const filePath = path.join(testDir, 'invalid-start.md');
       const existingFile = `Some content\n${START_MARKER}\nManaged content\nNo end marker`;
       await fs.writeFile(filePath, existingFile);
@@ -158,7 +158,7 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
       ).rejects.toThrow(/Invalid marker state/);
     });
 
-    it('should throw error if only end marker exists', async () => {
+    it('仅存在结束标记时应抛出错误', async () => {
       const filePath = path.join(testDir, 'invalid-end.md');
       const existingFile = `Some content\nNo start marker\nManaged content\n${END_MARKER}`;
       await fs.writeFile(filePath, existingFile);
@@ -174,8 +174,8 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
     });
   });
 
-  describe('idempotency', () => {
-    it('should produce same result when called multiple times with same content', async () => {
+  describe('幂等性', () => {
+    it('使用相同内容多次调用时应产生相同结果', async () => {
       const filePath = path.join(testDir, 'idempotent.md');
       const content = 'Consistent content';
       
@@ -200,8 +200,8 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
     });
   });
 
-  describe('edge cases', () => {
-    it('should handle empty content', async () => {
+  describe('边缘情况', () => {
+    it('应处理空内容', async () => {
       const filePath = path.join(testDir, 'empty-content.md');
       
       await FileSystemUtils.updateFileWithMarkers(
@@ -215,7 +215,7 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
       expect(result).toBe(`${START_MARKER}\n\n${END_MARKER}`);
     });
 
-    it('should handle content with special characters', async () => {
+    it('应处理包含特殊字符的内容', async () => {
       const filePath = path.join(testDir, 'special-chars.md');
       const content = '# Special chars: ${}[]()<>|\\`*_~';
       
@@ -230,7 +230,7 @@ describe('FileSystemUtils.updateFileWithMarkers', () => {
       expect(result).toContain(content);
     });
 
-    it('should handle multi-line content', async () => {
+    it('应处理多行内容', async () => {
       const filePath = path.join(testDir, 'multi-line.md');
       const content = `Line 1
 Line 2
@@ -249,7 +249,7 @@ Line 5 with gap`;
       expect(result).toContain(content);
     });
 
-    it('should ignore inline mentions of markers when updating content', async () => {
+    it('更新内容时应忽略内联标记引用', async () => {
       const filePath = path.join(testDir, 'inline-mentions.md');
       const existingFile = `Intro referencing markers like ${START_MARKER} and ${END_MARKER} inside text.
 

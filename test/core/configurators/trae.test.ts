@@ -7,7 +7,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import os from 'os';
 
-describe('TraeConfigurator', () => {
+describe('Trae配置器', () => {
   let configurator: TraeConfigurator;
   let tempDir: string;
 
@@ -20,13 +20,13 @@ describe('TraeConfigurator', () => {
     await fs.rm(tempDir, { recursive: true, force: true });
   });
 
-  it('should have correct properties', () => {
+  it('应具有正确的属性', () => {
     expect(configurator.name).toBe('Trae IDE');
     expect(configurator.configFileName).toBe('.trae/rules/project_rules.md');
     expect(configurator.isAvailable).toBe(true);
   });
 
-  it('should create Trae configuration file', async () => {
+  it('应创建Trae配置文件', async () => {
     const openspecDir = path.join(tempDir, 'openspec');
     await fs.mkdir(openspecDir, { recursive: true });
 
@@ -42,7 +42,7 @@ describe('TraeConfigurator', () => {
     expect(content).toContain('OpenSpec');
   });
 
-  it('should update existing Trae configuration file', async () => {
+  it('应更新现有的Trae配置文件', async () => {
     const configPath = path.join(tempDir, '.trae/rules/project_rules.md');
     await fs.mkdir(path.dirname(configPath), { recursive: true });
     
@@ -70,7 +70,7 @@ More custom content`;
     expect(updatedContent).not.toContain('Old OpenSpec content');
   });
 
-  it('should use agents standard template', async () => {
+  it('应使用代理标准模板', async () => {
     const openspecDir = path.join(tempDir, 'openspec');
     await fs.mkdir(openspecDir, { recursive: true });
 

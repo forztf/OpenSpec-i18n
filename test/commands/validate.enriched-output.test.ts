@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-describe('validate command enriched human output', () => {
+describe('验证命令增强的人类可读输出', () => {
   const projectRoot = process.cwd();
   const testDir = path.join(projectRoot, 'test-validate-enriched-tmp');
   const changesDir = path.join(testDir, 'openspec', 'changes');
@@ -18,7 +18,7 @@ describe('validate command enriched human output', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  it('prints Next steps footer and guidance on invalid change', async () => {
+  it('在无效变更时打印下一步操作页脚和指导', async () => {
     const changeContent = `# Test Change\n\n## Why\nThis is a sufficiently long explanation to pass the why length requirement for validation purposes.\n\n## What Changes\nThere are changes proposed, but no delta specs provided yet.`;
     const changeId = 'c-next-steps';
     const changePath = path.join(changesDir, changeId);

@@ -14,8 +14,8 @@ async function withTempDir(run: (dir: string) => Promise<void>) {
   }
 }
 
-describe('ChangeParser', () => {
-  it('parses simple What Changes bullet list', async () => {
+describe('变更解析器', () => {
+  it('解析简单的变更列表', async () => {
     const content = `# Test Change\n\n## Why\nWe need it because reasons that are sufficiently long.\n\n## What Changes\n- **spec-a:** Add a new requirement to A\n- **spec-b:** Rename requirement X to Y\n- **spec-c:** Remove obsolete requirement`;
 
     const parser = new ChangeParser(content, process.cwd());
@@ -27,7 +27,7 @@ describe('ChangeParser', () => {
     expect(['ADDED', 'MODIFIED', 'REMOVED', 'RENAMED']).toContain(change.deltas[1].operation);
   });
 
-  it('prefers delta-format specs over simple bullets when both exist', async () => {
+  it('当两者都存在时优先选择增量格式规范而非简单列表', async () => {
     await withTempDir(async (dir) => {
       const changeDir = dir;
       const specsDir = path.join(changeDir, 'specs', 'foo');

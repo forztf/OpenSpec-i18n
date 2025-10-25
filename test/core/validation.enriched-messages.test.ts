@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { Validator } from '../../src/core/validation/validator.js';
 
-describe('Validator enriched messages', () => {
+describe('验证器增强消息', () => {
   const testDir = path.join(process.cwd(), 'test-validation-enriched-tmp');
 
   beforeEach(async () => {
@@ -14,7 +14,7 @@ describe('Validator enriched messages', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  it('adds guidance for no deltas in change', async () => {
+  it('为无增量的变更添加指导', async () => {
     const changeContent = `# Test Change
 
 ## Why
@@ -34,7 +34,7 @@ There are changes proposed, but no delta specs provided yet.`;
     expect(msg).toContain('## ADDED/MODIFIED/REMOVED/RENAMED Requirements');
   });
 
-  it('adds guidance when spec missing Purpose/Requirements', async () => {
+  it('当规范缺失Purpose/Requirements时添加指导', async () => {
     const specContent = `# Test Spec\n\n## Requirements\n\n### Requirement: Foo\nFoo SHALL ...\n\n#### Scenario: Bar\nWhen...`;
     const specPath = path.join(testDir, 'spec.md');
     await fs.writeFile(specPath, specContent);
@@ -47,7 +47,7 @@ There are changes proposed, but no delta specs provided yet.`;
     expect(msg).toContain('Expected headers: "## Purpose" and "## Requirements"');
   });
 
-  it('warns with scenario conversion template when missing scenarios', async () => {
+  it('缺失场景时使用场景转换模板进行警告', async () => {
     const specContent = `# Test Spec
 
 ## Purpose

@@ -31,7 +31,7 @@ afterAll(async () => {
   await Promise.all(tempRoots.map((dir) => fs.rm(dir, { recursive: true, force: true })));
 });
 
-describe('openspec CLI e2e basics', () => {
+describe('openspec CLI 端到端基础测试', () => {
   let prevOpenspecLang: string | undefined;
   let prevLang: string | undefined;
 
@@ -56,7 +56,7 @@ describe('openspec CLI e2e basics', () => {
     if (prevLang === undefined) delete process.env.LANG;
     else process.env.LANG = prevLang;
   });
-  it('shows help output', async () => {
+  it('显示帮助输出', async () => {
     const result = await runCLI(['--help']);
     expect(result.exitCode).toBe(0);
     expect(result.stdout).toContain('Usage: openspec');
@@ -64,7 +64,7 @@ describe('openspec CLI e2e basics', () => {
 
   });
 
-  it('shows dynamic tool ids in init help', async () => {
+  it('在初始化帮助中显示动态工具ID', async () => {
     const result = await runCLI(['init', '--help']);
     expect(result.exitCode).toBe(0);
 
@@ -77,7 +77,7 @@ describe('openspec CLI e2e basics', () => {
     );
   });
 
-  it('reports the package version', async () => {
+  it('报告包版本', async () => {
     const pkgRaw = await fs.readFile(path.join(cliProjectRoot, 'package.json'), 'utf-8');
     const pkg = JSON.parse(pkgRaw);
     const result = await runCLI(['--version']);
@@ -85,7 +85,7 @@ describe('openspec CLI e2e basics', () => {
     expect(result.stdout.trim()).toBe(pkg.version);
   });
 
-  it('validates the tmp-init fixture with --all --json', async () => {
+  it('使用--all --json参数验证tmp-init示例', async () => {
     const projectDir = await prepareFixture('tmp-init');
     const result = await runCLI(['validate', '--all', '--json'], { cwd: projectDir });
     expect(result.exitCode).toBe(0);
@@ -96,15 +96,15 @@ describe('openspec CLI e2e basics', () => {
     expect(json.items.some((item: any) => item.id === 'c1' && item.type === 'change')).toBe(true);
   });
 
-  it('returns an error for unknown items in the fixture', async () => {
+  it('对示例中的未知项目返回错误', async () => {
     const projectDir = await prepareFixture('tmp-init');
     const result = await runCLI(['validate', 'does-not-exist'], { cwd: projectDir });
     expect(result.exitCode).toBe(1);
     expect(result.stderr).toContain("Unknown item 'does-not-exist'");
   });
 
-  describe('init command non-interactive options', () => {
-    it('initializes with --tools all option', async () => {
+  describe('init命令非交互式选项', () => {
+    it('使用--tools all选项初始化', async () => {
       const projectDir = await prepareFixture('tmp-init');
       const emptyProjectDir = path.join(projectDir, '..', 'empty-project');
       await fs.mkdir(emptyProjectDir, { recursive: true });
@@ -124,7 +124,7 @@ describe('openspec CLI e2e basics', () => {
       expect(await fileExists(cursorProposal)).toBe(true);
     });
 
-    it('initializes with --tools list option', async () => {
+    it('使用--tools列表选项初始化', async () => {
       const projectDir = await prepareFixture('tmp-init');
       const emptyProjectDir = path.join(projectDir, '..', 'empty-project');
       await fs.mkdir(emptyProjectDir, { recursive: true });
@@ -139,7 +139,7 @@ describe('openspec CLI e2e basics', () => {
       expect(await fileExists(cursorProposal)).toBe(false); // Not selected
     });
 
-    it('initializes with --tools none option', async () => {
+    it('使用--tools none选项初始化', async () => {
       const projectDir = await prepareFixture('tmp-init');
       const emptyProjectDir = path.join(projectDir, '..', 'empty-project');
       await fs.mkdir(emptyProjectDir, { recursive: true });
@@ -157,7 +157,7 @@ describe('openspec CLI e2e basics', () => {
       expect(await fileExists(cursorProposal)).toBe(false);
     });
 
-    it('returns error for invalid tool names', async () => {
+    it('对无效工具名称返回错误', async () => {
       const projectDir = await prepareFixture('tmp-init');
       const emptyProjectDir = path.join(projectDir, '..', 'empty-project');
       await fs.mkdir(emptyProjectDir, { recursive: true });
@@ -168,7 +168,7 @@ describe('openspec CLI e2e basics', () => {
       expect(result.stderr).toContain('Available values:');
     });
 
-    it('returns error when combining reserved keywords with explicit ids', async () => {
+    it('当组合保留关键字与显式ID时返回错误', async () => {
       const projectDir = await prepareFixture('tmp-init');
       const emptyProjectDir = path.join(projectDir, '..', 'empty-project');
       await fs.mkdir(emptyProjectDir, { recursive: true });

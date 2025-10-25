@@ -8,7 +8,7 @@ import fs from 'fs/promises';
 import os from 'os';
 import { randomUUID } from 'crypto';
 
-describe('UpdateCommand', () => {
+describe('更新命令', () => {
   let testDir: string;
   let updateCommand: UpdateCommand;
   let prevCodexHome: string | undefined;
@@ -58,7 +58,7 @@ describe('UpdateCommand', () => {
     else process.env.LANG = prevLang;
   });
 
-  it('should update only existing CLAUDE.md file', async () => {
+  it('应仅更新现有的CLAUDE.md文件', async () => {
     // Create CLAUDE.md file with initial content
     const claudePath = path.join(testDir, 'CLAUDE.md');
     const initialContent = `# Project Instructions
@@ -96,7 +96,7 @@ More content after.`;
     consoleSpy.mockRestore();
   });
 
-  it('should refresh existing Claude slash command files', async () => {
+  it('应刷新现有的Claude斜杠命令文件', async () => {
     const proposalPath = path.join(
       testDir,
       '.claude/commands/openspec/proposal.md'
@@ -137,7 +137,7 @@ Old slash content
     consoleSpy.mockRestore();
   });
 
-  it('should not create CLAUDE.md if it does not exist', async () => {
+  it('如果CLAUDE.md不存在则不应创建', async () => {
     // Ensure CLAUDE.md does not exist
     const claudePath = path.join(testDir, 'CLAUDE.md');
 
@@ -149,7 +149,7 @@ Old slash content
     expect(fileExists).toBe(false);
   });
 
-  it('should update only existing CLINE.md file', async () => {
+  it('应仅更新现有的CLINE.md文件', async () => {
     // Create CLINE.md file with initial content
     const clinePath = path.join(testDir, 'CLINE.md');
     const initialContent = `# Cline Rules
@@ -187,7 +187,7 @@ More rules after.`;
     consoleSpy.mockRestore();
   });
 
-  it('should not create CLINE.md if it does not exist', async () => {
+  it('如果CLINE.md不存在则不应创建', async () => {
     // Ensure CLINE.md does not exist
     const clinePath = path.join(testDir, 'CLINE.md');
 
@@ -199,7 +199,7 @@ More rules after.`;
     expect(fileExists).toBe(false);
   });
 
-  it('should refresh existing Cline rule files', async () => {
+  it('应刷新现有的Cline规则文件', async () => {
     const proposalPath = path.join(
       testDir,
       '.clinerules/openspec-proposal.md'
@@ -238,7 +238,7 @@ Old slash content
     consoleSpy.mockRestore();
   });
 
-  it('should refresh existing Cursor slash command files', async () => {
+  it('应刷新现有的Cursor斜杠命令文件', async () => {
     const cursorPath = path.join(testDir, '.cursor/commands/openspec-apply.md');
     await fs.mkdir(path.dirname(cursorPath), { recursive: true });
     const initialContent = `---
@@ -273,7 +273,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should refresh existing OpenCode slash command files', async () => {
+  it('应刷新现有的OpenCode斜杠命令文件', async () => {
     const openCodePath = path.join(
       testDir,
       '.opencode/command/openspec-apply.md'
@@ -311,7 +311,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should refresh existing Kilo Code workflows', async () => {
+  it('应刷新现有的Kilo Code工作流', async () => {
     const kilocodePath = path.join(
       testDir,
       '.kilocode/workflows/openspec-apply.md'
@@ -339,7 +339,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should refresh existing Windsurf workflows', async () => {
+  it('应刷新现有的Windsurf工作流', async () => {
     const wsPath = path.join(
       testDir,
       '.windsurf/workflows/openspec-apply.md'
@@ -368,7 +368,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should refresh existing Codex prompts', async () => {
+  it('应刷新现有的Codex提示', async () => {
     const codexPath = path.join(
       testDir,
       '.codex/prompts/openspec-apply.md'
@@ -397,7 +397,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should not create missing Codex prompts on update', async () => {
+  it('更新时不应创建缺失的Codex提示', async () => {
     const codexApply = path.join(
       testDir,
       '.codex/prompts/openspec-apply.md'
@@ -426,7 +426,7 @@ Old body
     await expect(FileSystemUtils.fileExists(codexArchive)).resolves.toBe(false);
   });
 
-  it('should refresh existing GitHub Copilot prompts', async () => {
+  it('应刷新现有的GitHub Copilot提示', async () => {
     const ghPath = path.join(
       testDir,
       '.github/prompts/openspec-apply.prompt.md'
@@ -460,7 +460,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should not create missing GitHub Copilot prompts on update', async () => {
+  it('更新时不应创建缺失的GitHub Copilot提示', async () => {
     const ghApply = path.join(
       testDir,
       '.github/prompts/openspec-apply.prompt.md'
@@ -489,7 +489,7 @@ Old body
     await expect(FileSystemUtils.fileExists(ghArchive)).resolves.toBe(false);
   });
 
-  it('should refresh existing Factory slash commands', async () => {
+  it('应刷新现有的Factory斜杠命令', async () => {
     const factoryPath = path.join(
       testDir,
       '.factory/commands/openspec-proposal.md'
@@ -525,7 +525,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should not create missing Factory slash command files on update', async () => {
+  it('更新时不应创建缺失的Factory斜杠命令文件', async () => {
     const factoryApply = path.join(
       testDir,
       '.factory/commands/openspec-apply.md'
@@ -559,7 +559,7 @@ Old body
     await expect(FileSystemUtils.fileExists(factoryArchive)).resolves.toBe(false);
   });
 
-  it('should refresh existing Amazon Q Developer prompts', async () => {
+  it('应刷新现有的Amazon Q Developer提示', async () => {
     const aqPath = path.join(
       testDir,
       '.amazonq/prompts/openspec-apply.md'
@@ -596,7 +596,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should not create missing Amazon Q Developer prompts on update', async () => {
+  it('更新时不应创建缺失的Amazon Q Developer提示', async () => {
     const aqApply = path.join(
       testDir,
       '.amazonq/prompts/openspec-apply.md'
@@ -625,7 +625,7 @@ Old body
     await expect(FileSystemUtils.fileExists(aqArchive)).resolves.toBe(false);
   });
 
-  it('should refresh existing Auggie slash command files', async () => {
+  it('应刷新现有的Auggie斜杠命令文件', async () => {
     const auggiePath = path.join(
       testDir,
       '.augment/commands/openspec-apply.md'
@@ -657,7 +657,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should not create missing Auggie slash command files on update', async () => {
+  it('更新时不应创建缺失的Auggie斜杠命令文件', async () => {
     const auggieApply = path.join(
       testDir,
       '.augment/commands/openspec-apply.md'
@@ -686,7 +686,7 @@ Old body
     await expect(FileSystemUtils.fileExists(auggieArchive)).resolves.toBe(false);
   });
 
-  it('should refresh existing CodeBuddy slash command files', async () => {
+  it('应刷新现有的CodeBuddy斜杠命令文件', async () => {
     const codeBuddyPath = path.join(
       testDir,
       '.codebuddy/commands/openspec/proposal.md'
@@ -727,7 +727,7 @@ Old slash content
     consoleSpy.mockRestore();
   });
 
-  it('should not create missing CodeBuddy slash command files on update', async () => {
+  it('更新时不应创建缺失的CodeBuddy斜杠命令文件', async () => {
     const codeBuddyApply = path.join(
       testDir,
       '.codebuddy/commands/openspec/apply.md'
@@ -764,7 +764,7 @@ Old body
     await expect(FileSystemUtils.fileExists(codeBuddyArchive)).resolves.toBe(false);
   });
 
-  it('should refresh existing Crush slash command files', async () => {
+  it('应刷新现有的Crush斜杠命令文件', async () => {
     const crushPath = path.join(
       testDir,
       '.crush/commands/openspec/proposal.md'
@@ -805,7 +805,7 @@ Old slash content
     consoleSpy.mockRestore();
   });
 
-  it('should not create missing Crush slash command files on update', async () => {
+  it('更新时不应创建缺失的Crush斜杠命令文件', async () => {
     const crushApply = path.join(
       testDir,
       '.crush/commands/openspec-apply.md'
@@ -842,7 +842,7 @@ Old body
     await expect(FileSystemUtils.fileExists(crushArchive)).resolves.toBe(false);
   });
 
-  it('should preserve Windsurf content outside markers during update', async () => {
+  it('更新时应保留标记外的Windsurf内容', async () => {
     const wsPath = path.join(
       testDir,
       '.windsurf/workflows/openspec-proposal.md'
@@ -860,7 +860,7 @@ Old body
     expect(updated).toContain('Validate with `openspec validate <id> --strict`');
   });
 
-  it('should not create missing Windsurf workflows on update', async () => {
+  it('更新时不应创建缺失的Windsurf工作流', async () => {
     const wsApply = path.join(
       testDir,
       '.windsurf/workflows/openspec-apply.md'
@@ -888,7 +888,7 @@ Old body
     await expect(FileSystemUtils.fileExists(wsArchive)).resolves.toBe(false);
   });
 
-  it('should handle no AI tool files present', async () => {
+  it('应处理无AI工具文件的情况', async () => {
     // Execute update command with no AI tool files
     const consoleSpy = vi.spyOn(console, 'log');
     await updateCommand.execute(testDir);
@@ -902,7 +902,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should update multiple AI tool files if present', async () => {
+  it('如果存在应更新多个AI工具文件', async () => {
     // TODO: When additional configurators are added (Cursor, Aider, etc.),
     // enhance this test to create multiple AI tool files and verify
     // that all existing files are updated in a single operation.
@@ -927,7 +927,7 @@ Old body
     consoleSpy.mockRestore();
   });
 
-  it('should skip creating missing slash commands during update', async () => {
+  it('更新时应跳过创建缺失的斜杠命令', async () => {
     const proposalPath = path.join(
       testDir,
       '.claude/commands/openspec/proposal.md'
@@ -959,7 +959,7 @@ Old content
     expect(archiveExists).toBe(false);
   });
 
-  it('should never create new AI tool files', async () => {
+  it('不应创建新的AI工具文件', async () => {
     // Get all configurators
     const configurators = ToolRegistry.getAll();
 
@@ -978,7 +978,7 @@ Old content
     }
   });
 
-  it('should update AGENTS.md in openspec directory', async () => {
+  it('应更新openspec目录中的AGENTS.md', async () => {
     // Execute update command
     await updateCommand.execute(testDir);
 
@@ -991,7 +991,7 @@ Old content
     expect(content).toContain('# OpenSpec Instructions');
   });
 
-  it('should create root AGENTS.md with managed block when missing', async () => {
+  it('缺失时应创建带管理块的根AGENTS.md', async () => {
     await updateCommand.execute(testDir);
 
     const rootAgentsPath = path.join(testDir, 'AGENTS.md');
@@ -1005,7 +1005,7 @@ Old content
     expect(content).toContain('<!-- OPENSPEC:END -->');
   });
 
-  it('should refresh root AGENTS.md while preserving surrounding content', async () => {
+  it('应刷新根AGENTS.md并保留周围内容', async () => {
     const rootAgentsPath = path.join(testDir, 'AGENTS.md');
     const original = `# Custom intro\n\n<!-- OPENSPEC:START -->\nOld content\n<!-- OPENSPEC:END -->\n\n# Footnotes`;
     await fs.writeFile(rootAgentsPath, original);
@@ -1030,7 +1030,7 @@ Old content
     consoleSpy.mockRestore();
   });
 
-  it('should throw error if openspec directory does not exist', async () => {
+  it('如果openspec目录不存在应抛出错误', async () => {
     // Remove openspec directory
     await fs.rm(path.join(testDir, 'openspec'), {
       recursive: true,
@@ -1043,7 +1043,7 @@ Old content
     );
   });
 
-  it('should handle configurator errors gracefully', async () => {
+  it('应优雅地处理配置器错误', async () => {
     // Create CLAUDE.md file but make it read-only to cause an error
     const claudePath = path.join(testDir, 'CLAUDE.md');
     await fs.writeFile(
@@ -1082,5 +1082,229 @@ Old content
     consoleSpy.mockRestore();
     errorSpy.mockRestore();
     writeSpy.mockRestore();
+  });
+});
+
+describe('支持中文国际化的更新命令', () => {
+  let testDir: string;
+  let updateCommand: UpdateCommand;
+  let prevCodexHome: string | undefined;
+  let prevOpenspecLang: string | undefined;
+  let prevLang: string | undefined;
+
+  beforeEach(async () => {
+    // Create a temporary test directory
+    testDir = path.join(os.tmpdir(), `openspec-test-${randomUUID()}`);
+    await fs.mkdir(testDir, { recursive: true });
+
+    // Create openspec directory
+    const openspecDir = path.join(testDir, 'openspec');
+    await fs.mkdir(openspecDir, { recursive: true });
+
+    updateCommand = new UpdateCommand();
+
+    // Route Codex global directory into the test sandbox
+    prevCodexHome = process.env.CODEX_HOME;
+    process.env.CODEX_HOME = path.join(testDir, '.codex');
+
+    // Save original environment variables for language control
+    prevOpenspecLang = process.env.OPENSPEC_LANG;
+    prevLang = process.env.LANG;
+
+    // Force Chinese language for consistent test results
+    process.env.OPENSPEC_LANG = 'zh';
+    process.env.LANG = 'zh';
+
+    // Re-initialize i18n with Chinese
+    await initI18n('zh');
+  });
+
+  afterEach(async () => {
+    // Clean up test directory
+    await fs.rm(testDir, { recursive: true, force: true });
+    
+    // Restore Codex environment
+    if (prevCodexHome === undefined) delete process.env.CODEX_HOME;
+    else process.env.CODEX_HOME = prevCodexHome;
+
+    // Restore original language environment variables
+    if (prevOpenspecLang === undefined) delete process.env.OPENSPEC_LANG;
+    else process.env.OPENSPEC_LANG = prevOpenspecLang;
+    
+    if (prevLang === undefined) delete process.env.LANG;
+    else process.env.LANG = prevLang;
+  });
+
+  describe('中文本地化内容', () => {
+    it('应创建包含中文内容的AGENTS.md', async () => {
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      await updateCommand.execute(testDir);
+
+      // Check that AGENTS.md was created with Chinese content
+      const agentsPath = path.join(testDir, 'openspec', 'AGENTS.md');
+      const fileExists = await FileSystemUtils.fileExists(agentsPath);
+      expect(fileExists).toBe(true);
+
+      const content = await fs.readFile(agentsPath, 'utf-8');
+      expect(content).toContain('OpenSpec 指令');
+      expect(content).toContain('变更');
+      expect(content).toContain('规范');
+      expect(content).toContain('提案');
+
+      consoleSpy.mockRestore();
+    });
+
+    it('应使用中文内容更新现有的CLAUDE.md', async () => {
+      // Create CLAUDE.md file with initial content
+      const claudePath = path.join(testDir, 'CLAUDE.md');
+      const initialContent = `# Project Instructions
+
+Some existing content here.
+
+<!-- OPENSPEC:START -->
+Old OpenSpec content
+<!-- OPENSPEC:END -->
+
+More content after.`;
+      await fs.writeFile(claudePath, initialContent);
+
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      await updateCommand.execute(testDir);
+
+      // Check that CLAUDE.md was updated with Chinese content
+      const updatedContent = await fs.readFile(claudePath, 'utf-8');
+      expect(updatedContent).toContain('<!-- OPENSPEC:START -->');
+      expect(updatedContent).toContain('<!-- OPENSPEC:END -->');
+      expect(updatedContent).toContain("@/openspec/AGENTS.md");
+      expect(updatedContent).toContain('openspec update');
+      expect(updatedContent).toContain('Some existing content here');
+      expect(updatedContent).toContain('More content after');
+
+      consoleSpy.mockRestore();
+    });
+
+    it('应使用中文内容更新现有的CLINE.md', async () => {
+      // Create CLINE.md file with initial content
+      const clinePath = path.join(testDir, 'CLINE.md');
+      const initialContent = `# Cline Rules
+
+Some existing Cline rules here.
+
+<!-- OPENSPEC:START -->
+Old OpenSpec content
+<!-- OPENSPEC:END -->
+
+More rules after.`;
+      await fs.writeFile(clinePath, initialContent);
+
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      await updateCommand.execute(testDir);
+
+      // Check that CLINE.md was updated with Chinese content
+      const updatedContent = await fs.readFile(clinePath, 'utf-8');
+      expect(updatedContent).toContain('<!-- OPENSPEC:START -->');
+      expect(updatedContent).toContain('<!-- OPENSPEC:END -->');
+      expect(updatedContent).toContain("@/openspec/AGENTS.md");
+      expect(updatedContent).toContain('openspec update');
+      expect(updatedContent).toContain('Some existing Cline rules here');
+      expect(updatedContent).toContain('More rules after');
+
+      consoleSpy.mockRestore();
+    });
+
+    it('应显示中文成功消息', async () => {
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      await updateCommand.execute(testDir);
+
+      // Check console output for Chinese messages
+      const calls = consoleSpy.mock.calls.map(call => call[0]);
+      expect(calls.some(call => call.includes('已更新 OpenSpec 指令'))).toBe(true);
+
+      consoleSpy.mockRestore();
+    });
+
+    it('应处理缺失目录的中文错误消息', async () => {
+      // Remove openspec directory
+      await fs.rm(path.join(testDir, 'openspec'), {
+        recursive: true,
+        force: true,
+      });
+
+      // Execute update command and expect Chinese error
+      await expect(updateCommand.execute(testDir)).rejects.toThrow(
+        "未找到 OpenSpec 目录。请先运行 'openspec init'。"
+      );
+    });
+
+    it('应创建包含中文内容的根AGENTS.md存根', async () => {
+      await updateCommand.execute(testDir);
+
+      const rootAgentsPath = path.join(testDir, 'AGENTS.md');
+      const exists = await FileSystemUtils.fileExists(rootAgentsPath);
+      expect(exists).toBe(true);
+
+      const content = await fs.readFile(rootAgentsPath, 'utf-8');
+      expect(content).toContain('<!-- OPENSPEC:START -->');
+      expect(content).toContain("@/openspec/AGENTS.md");
+      expect(content).toContain('openspec update');
+      expect(content).toContain('<!-- OPENSPEC:END -->');
+    });
+
+    it('应使用中文标记更新现有文件', async () => {
+      const rootAgentsPath = path.join(testDir, 'AGENTS.md');
+      const original = `# Custom intro\n\n<!-- OPENSPEC:START -->\nOld content\n<!-- OPENSPEC:END -->\n\n# Footnotes`;
+      await fs.writeFile(rootAgentsPath, original);
+
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      await updateCommand.execute(testDir);
+
+      const updated = await fs.readFile(rootAgentsPath, 'utf-8');
+      expect(updated).toContain('# Custom intro');
+      expect(updated).toContain('# Footnotes');
+      expect(updated).toContain("@/openspec/AGENTS.md");
+      expect(updated).toContain('openspec update');
+      expect(updated).not.toContain('Old content');
+
+      // Check for Chinese success message
+        const calls = consoleSpy.mock.calls.map(call => call[0]);
+        expect(calls.some(call => call.includes('已更新 OpenSpec 指令'))).toBe(true);
+
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('中文环境验证', () => {
+    it('应正确初始化中文语言环境', async () => {
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      await updateCommand.execute(testDir);
+
+      // Verify that Chinese messages are displayed
+      const calls = consoleSpy.mock.calls.map(call => call[0]);
+      expect(calls.some(call => call.includes('已更新 OpenSpec 指令'))).toBe(true);
+
+      consoleSpy.mockRestore();
+    });
+
+    it('应优雅地处理混合语言环境', async () => {
+      // Set mixed environment
+      process.env.LANG = 'en';
+      process.env.OPENSPEC_LANG = 'zh';
+
+      const consoleSpy = vi.spyOn(console, 'log');
+
+      await updateCommand.execute(testDir);
+
+      // Should still use Chinese based on OPENSPEC_LANG
+      const calls = consoleSpy.mock.calls.map(call => call[0]);
+      expect(calls.some(call => call.includes('已更新 OpenSpec 指令'))).toBe(true);
+
+      consoleSpy.mockRestore();
+    });
   });
 });

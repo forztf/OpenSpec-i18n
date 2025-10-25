@@ -5,7 +5,7 @@ import os from 'os';
 import { randomUUID } from 'crypto';
 import { FileSystemUtils } from '../../src/utils/file-system.js';
 
-describe('FileSystemUtils', () => {
+describe('文件系统工具', () => {
   let testDir: string;
 
   beforeEach(async () => {
@@ -17,8 +17,8 @@ describe('FileSystemUtils', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  describe('createDirectory', () => {
-    it('should create a directory', async () => {
+  describe('创建目录', () => {
+    it('应创建目录', async () => {
       const dirPath = path.join(testDir, 'new-dir');
       await FileSystemUtils.createDirectory(dirPath);
       
@@ -26,7 +26,7 @@ describe('FileSystemUtils', () => {
       expect(stats.isDirectory()).toBe(true);
     });
 
-    it('should create nested directories', async () => {
+    it('应创建嵌套目录', async () => {
       const dirPath = path.join(testDir, 'nested', 'deep', 'dir');
       await FileSystemUtils.createDirectory(dirPath);
       
@@ -34,7 +34,7 @@ describe('FileSystemUtils', () => {
       expect(stats.isDirectory()).toBe(true);
     });
 
-    it('should not throw if directory already exists', async () => {
+    it('目录已存在时不应抛出异常', async () => {
       const dirPath = path.join(testDir, 'existing-dir');
       await fs.mkdir(dirPath);
       
@@ -42,8 +42,8 @@ describe('FileSystemUtils', () => {
     });
   });
 
-  describe('fileExists', () => {
-    it('should return true for existing file', async () => {
+  describe('文件是否存在', () => {
+    it('应为存在的文件返回true', async () => {
       const filePath = path.join(testDir, 'test.txt');
       await fs.writeFile(filePath, 'test content');
       
@@ -51,14 +51,14 @@ describe('FileSystemUtils', () => {
       expect(exists).toBe(true);
     });
 
-    it('should return false for non-existing file', async () => {
+    it('应为不存在的文件返回false', async () => {
       const filePath = path.join(testDir, 'non-existent.txt');
       
       const exists = await FileSystemUtils.fileExists(filePath);
       expect(exists).toBe(false);
     });
 
-    it('should return false for directory path', async () => {
+    it('应为目录路径返回false', async () => {
       const dirPath = path.join(testDir, 'dir');
       await fs.mkdir(dirPath);
       
@@ -67,8 +67,8 @@ describe('FileSystemUtils', () => {
     });
   });
 
-  describe('directoryExists', () => {
-    it('should return true for existing directory', async () => {
+  describe('目录是否存在', () => {
+    it('应为存在的目录返回true', async () => {
       const dirPath = path.join(testDir, 'test-dir');
       await fs.mkdir(dirPath);
       
@@ -76,14 +76,14 @@ describe('FileSystemUtils', () => {
       expect(exists).toBe(true);
     });
 
-    it('should return false for non-existing directory', async () => {
+    it('应为不存在的目录返回false', async () => {
       const dirPath = path.join(testDir, 'non-existent-dir');
       
       const exists = await FileSystemUtils.directoryExists(dirPath);
       expect(exists).toBe(false);
     });
 
-    it('should return false for file path', async () => {
+    it('应为文件路径返回false', async () => {
       const filePath = path.join(testDir, 'file.txt');
       await fs.writeFile(filePath, 'content');
       
@@ -92,8 +92,8 @@ describe('FileSystemUtils', () => {
     });
   });
 
-  describe('writeFile', () => {
-    it('should write content to file', async () => {
+  describe('写入文件', () => {
+    it('应将内容写入文件', async () => {
       const filePath = path.join(testDir, 'output.txt');
       const content = 'Hello, World!';
       
@@ -103,7 +103,7 @@ describe('FileSystemUtils', () => {
       expect(readContent).toBe(content);
     });
 
-    it('should create directory if it does not exist', async () => {
+    it('如果目录不存在应创建目录', async () => {
       const filePath = path.join(testDir, 'nested', 'dir', 'output.txt');
       const content = 'Nested content';
       
@@ -113,7 +113,7 @@ describe('FileSystemUtils', () => {
       expect(readContent).toBe(content);
     });
 
-    it('should overwrite existing file', async () => {
+    it('应覆盖已存在的文件', async () => {
       const filePath = path.join(testDir, 'existing.txt');
       await fs.writeFile(filePath, 'old content');
       
@@ -125,8 +125,8 @@ describe('FileSystemUtils', () => {
     });
   });
 
-  describe('readFile', () => {
-    it('should read file content', async () => {
+  describe('读取文件', () => {
+    it('应读取文件内容', async () => {
       const filePath = path.join(testDir, 'input.txt');
       const content = 'Test content';
       await fs.writeFile(filePath, content);
@@ -135,34 +135,34 @@ describe('FileSystemUtils', () => {
       expect(readContent).toBe(content);
     });
 
-    it('should throw for non-existing file', async () => {
+    it('应为不存在的文件抛出异常', async () => {
       const filePath = path.join(testDir, 'non-existent.txt');
       
       await expect(FileSystemUtils.readFile(filePath)).rejects.toThrow();
     });
   });
 
-  describe('ensureWritePermissions', () => {
-    it('should return true for writable directory', async () => {
+  describe('确保写入权限', () => {
+    it('应为可写目录返回true', async () => {
       const hasPermission = await FileSystemUtils.ensureWritePermissions(testDir);
       expect(hasPermission).toBe(true);
     });
 
-    it('should return true for non-existing directory with writable parent', async () => {
+    it('应为具有可写父目录的不存在目录返回true', async () => {
       const dirPath = path.join(testDir, 'new-dir');
       const hasPermission = await FileSystemUtils.ensureWritePermissions(dirPath);
       expect(hasPermission).toBe(true);
     });
 
-    it('should handle deeply nested non-existing directories', async () => {
+    it('应处理深度嵌套的不存在目录', async () => {
       const dirPath = path.join(testDir, 'a', 'b', 'c', 'd');
       const hasPermission = await FileSystemUtils.ensureWritePermissions(dirPath);
       expect(hasPermission).toBe(true);
     });
   });
 
-  describe('joinPath', () => {
-    it('should join POSIX-style paths', () => {
+  describe('连接路径', () => {
+    it('应连接POSIX风格路径', () => {
       const result = FileSystemUtils.joinPath(
         '/tmp/project',
         '.claude/commands/openspec/proposal.md'
@@ -170,7 +170,7 @@ describe('FileSystemUtils', () => {
       expect(result).toBe('/tmp/project/.claude/commands/openspec/proposal.md');
     });
 
-    it('should join Linux home directory paths', () => {
+    it('应连接Linux主目录路径', () => {
       const result = FileSystemUtils.joinPath(
         '/home/dev/workspace/openspec',
         '.cursor/commands/install.md'
@@ -178,7 +178,7 @@ describe('FileSystemUtils', () => {
       expect(result).toBe('/home/dev/workspace/openspec/.cursor/commands/install.md');
     });
 
-    it('should join Windows drive-letter paths with backslashes', () => {
+    it('应使用反斜杠连接Windows驱动器路径', () => {
       const result = FileSystemUtils.joinPath(
         'C:\\Users\\dev\\project',
         '.claude/commands/openspec/proposal.md'
@@ -188,7 +188,7 @@ describe('FileSystemUtils', () => {
       );
     });
 
-    it('should join Windows paths that use forward slashes', () => {
+    it('应连接使用正斜杠的Windows路径', () => {
       const result = FileSystemUtils.joinPath(
         'D:/workspace/app',
         '.cursor/commands/openspec-apply.md'
@@ -198,7 +198,7 @@ describe('FileSystemUtils', () => {
       );
     });
 
-    it('should join UNC-style Windows paths', () => {
+    it('应连接UNC风格的Windows路径', () => {
       const result = FileSystemUtils.joinPath(
         '\\server\\share\\repo',
         '.windsurf/workflows/openspec-archive.md'

@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-describe('top-level show command', () => {
+describe('顶层显示命令', () => {
   const projectRoot = process.cwd();
   const testDir = path.join(projectRoot, 'test-show-command-tmp');
   const changesDir = path.join(testDir, 'openspec', 'changes');
@@ -28,7 +28,7 @@ describe('top-level show command', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  it('prints hint and non-zero exit when no args and non-interactive', () => {
+  it('无参数且非交互模式时打印提示并返回非零退出码', () => {
     const originalCwd = process.cwd();
     const originalEnv = { ...process.env };
     try {
@@ -51,7 +51,7 @@ describe('top-level show command', () => {
     }
   });
 
-  it('auto-detects change id and supports --json', () => {
+  it('自动检测变更ID并支持--json参数', () => {
     const originalCwd = process.cwd();
     try {
       process.chdir(testDir);
@@ -64,7 +64,7 @@ describe('top-level show command', () => {
     }
   });
 
-  it('auto-detects spec id and supports spec-only flags', () => {
+  it('自动检测规范ID并支持仅规范标志', () => {
     const originalCwd = process.cwd();
     try {
       process.chdir(testDir);
@@ -77,7 +77,7 @@ describe('top-level show command', () => {
     }
   });
 
-  it('handles ambiguity and suggests --type', async () => {
+  it('处理歧义并建议使用--type参数', async () => {
     // create matching spec and change named 'foo'
     await fs.mkdir(path.join(changesDir, 'foo'), { recursive: true });
     await fs.writeFile(path.join(changesDir, 'foo', 'proposal.md'), '# Change: Foo\n\n## Why\n\n## What Changes\n', 'utf-8');
@@ -101,7 +101,7 @@ describe('top-level show command', () => {
     }
   });
 
-  it('prints nearest matches when not found', () => {
+  it('未找到时打印最接近的匹配项', () => {
     const originalCwd = process.cwd();
     try {
       process.chdir(testDir);

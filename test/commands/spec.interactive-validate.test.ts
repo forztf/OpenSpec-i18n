@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-describe('spec validate (interactive behavior)', () => {
+describe('规范验证（交互行为）', () => {
   const projectRoot = process.cwd();
   const testDir = path.join(projectRoot, 'test-spec-validate-tmp');
   const specsDir = path.join(testDir, 'openspec', 'specs');
@@ -21,7 +21,7 @@ describe('spec validate (interactive behavior)', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  it('errors when no arg and non-interactive', () => {
+  it('无参数且非交互模式时出错', () => {
     const originalCwd = process.cwd();
     const originalEnv = { ...process.env };
     try {

@@ -6,7 +6,7 @@ import { execSync } from 'child_process';
 // Note: We cannot truly simulate TTY prompts in this test runner easily.
 // Instead, we verify non-interactive fallback behavior and basic invocation.
 
-describe('change validate (interactive behavior)', () => {
+describe('变更验证（交互行为）', () => {
   const projectRoot = process.cwd();
   const testDir = path.join(projectRoot, 'test-change-validate-tmp');
   const changesDir = path.join(testDir, 'openspec', 'changes');
@@ -24,7 +24,7 @@ describe('change validate (interactive behavior)', () => {
     await fs.rm(testDir, { recursive: true, force: true });
   });
 
-  it('prints list hint and exits non-zero when no arg and non-interactive', () => {
+  it('无参数且非交互模式时打印列表提示并退出非零值', () => {
     const originalCwd = process.cwd();
     const originalEnv = { ...process.env };
     try {
