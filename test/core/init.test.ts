@@ -602,6 +602,44 @@ describe('初始化命令', () => {
       await expect(initCommand.execute(testDir)).resolves.toBeUndefined();
     });
 
+    it('应在扩展模式下重新创建已删除的openspec/AGENTS.md', async () => {
+      await testFileRecreationInExtendMode(
+        testDir,
+        initCommand,
+        'openspec/AGENTS.md',
+        'OpenSpec Instructions'
+      );
+    });
+
+    it('应在扩展模式下重新创建已删除的openspec/project.md', async () => {
+      await testFileRecreationInExtendMode(
+        testDir,
+        initCommand,
+        'openspec/project.md',
+        'Project Context'
+      );
+    });
+
+    it('应在扩展模式下保留现有模板文件', async () => {
+      queueSelections('claude', DONE, DONE);
+
+      // First init
+      await initCommand.execute(testDir);
+
+      const agentsPath = path.join(testDir, 'openspec', 'AGENTS.md');
+      const customContent = '# My Custom AGENTS Content\nDo not overwrite this!';
+
+      // Modify the file with custom content
+      await fs.writeFile(agentsPath, customContent);
+
+      // Run init again - should NOT overwrite
+      await initCommand.execute(testDir);
+
+      const content = await fs.readFile(agentsPath, 'utf-8');
+      expect(content).toBe(customContent);
+      expect(content).not.toContain('OpenSpec Instructions');
+    });
+
     it('应处理不存在的目标目录', async () => {
       queueSelections('claude', DONE);
 
@@ -1086,6 +1124,87 @@ describe('初始化命令', () => {
     });
   });
 
+  describe('已配置检测', () => {
+    it('在有现有CLAUDE.md的新项目中不应显示工具为已配置', async () => {
+      // Simulate user having their own CLAUDE.md before running openspec init
+      const claudePath = path.join(testDir, 'CLAUDE.md');
+      await fs.writeFile(claudePath, '# My Custom Claude Instructions\n');
+
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      // In the first run (non-interactive mode via queueSelections),
+      // the prompt is called with configured: false for claude
+      const firstCallArgs = mockPrompt.mock.calls[0][0];
+      const claudeChoice = firstCallArgs.choices.find(
+        (choice: any) => choice.value === 'claude'
+      );
+
+      expect(claudeChoice.configured).toBe(false);
+    });
+
+    it('在有现有斜杠命令的新项目中不应显示工具为已配置', async () => {
+      // Simulate user having their own custom slash commands
+      const customCommandDir = path.join(testDir, '.claude/commands/custom');
+      await fs.mkdir(customCommandDir, { recursive: true });
+      await fs.writeFile(
+        path.join(customCommandDir, 'mycommand.md'),
+        '# My Custom Command\n'
+      );
+
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      const firstCallArgs = mockPrompt.mock.calls[0][0];
+      const claudeChoice = firstCallArgs.choices.find(
+        (choice: any) => choice.value === 'claude'
+      );
+
+      expect(claudeChoice.configured).toBe(false);
+    });
+
+    it('应在扩展模式下显示工具为已配置', async () => {
+      // First initialization
+      queueSelections('claude', DONE);
+      await initCommand.execute(testDir);
+
+      // Second initialization (extend mode)
+      queueSelections('cursor', DONE);
+      await initCommand.execute(testDir);
+
+      const secondCallArgs = mockPrompt.mock.calls[1][0];
+      const claudeChoice = secondCallArgs.choices.find(
+        (choice: any) => choice.value === 'claude'
+      );
+
+      expect(claudeChoice.configured).toBe(true);
+    });
+
+    it('即使有全局提示，在新初始化中也不应显示Codex为已配置', async () => {
+      // Create global Codex prompts (simulating previous installation)
+      const codexPromptsDir = path.join(testDir, '.codex/prompts');
+      await fs.mkdir(codexPromptsDir, { recursive: true });
+      await fs.writeFile(
+        path.join(codexPromptsDir, 'openspec-proposal.md'),
+        '# Existing prompt\n'
+      );
+
+      queueSelections('claude', DONE);
+
+      await initCommand.execute(testDir);
+
+      const firstCallArgs = mockPrompt.mock.calls[0][0];
+      const codexChoice = firstCallArgs.choices.find(
+        (choice: any) => choice.value === 'codex'
+      );
+
+      // In fresh init, even global tools should not show as configured
+      expect(codexChoice.configured).toBe(false);
+    });
+  });
+
   describe('错误处理', () => {
     it('应为权限不足提供有用的错误信息', async () => {
       // This is tricky to test cross-platform, but we can test the error message
@@ -1113,6 +1232,32 @@ describe('初始化命令', () => {
     });
   });
 });
+
+async function testFileRecreationInExtendMode(
+  testDir: string,
+  initCommand: InitCommand,
+  relativePath: string,
+  expectedContent: string
+): Promise<void> {
+  queueSelections('claude', DONE, DONE);
+
+  // First init
+  await initCommand.execute(testDir);
+
+  const filePath = path.join(testDir, relativePath);
+  expect(await fileExists(filePath)).toBe(true);
+
+  // Delete the file
+  await fs.unlink(filePath);
+  expect(await fileExists(filePath)).toBe(false);
+
+  // Run init again - should recreate the file
+  await initCommand.execute(testDir);
+  expect(await fileExists(filePath)).toBe(true);
+
+  const content = await fs.readFile(filePath, 'utf-8');
+  expect(content).toContain(expectedContent);
+}
 
 async function fileExists(filePath: string): Promise<boolean> {
   try {

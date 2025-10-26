@@ -21,6 +21,7 @@ import {
   AI_TOOLS,
   OPENSPEC_DIR_NAME,
   AIToolOption,
+  OPENSPEC_MARKERS,
 } from './config.js';
 import { PALETTE } from './styles/palette.js';
 import { t, initI18n } from './i18n/index.js';
@@ -392,7 +393,7 @@ export class InitCommand {
 
     // Validation happens silently in the background
     const extendMode = await this.validate(projectPath, openspecPath);
-    const existingToolStates = await this.getExistingToolStates(projectPath);
+    const existingToolStates = await this.getExistingToolStates(projectPath, extendMode);
 
     this.renderBanner(extendMode);
 
@@ -431,9 +432,11 @@ export class InitCommand {
     } else {
       ora({ stream: process.stdout }).info(
         PALETTE.midGray(
-          'ℹ OpenSpec already initialized. Skipping base scaffolding.'
+          'ℹ OpenSpec already initialized. Checking for missing files...'
         )
       );
+      await this.createDirectoryStructure(openspecPath);
+      await this.ensureTemplateFiles(openspecPath, config);
     }
 
     // Step 2: Configure AI tools
@@ -670,35 +673,78 @@ export class InitCommand {
   }
 
   private async getExistingToolStates(
-    projectPath: string
+    projectPath: string,
+    extendMode: boolean
   ): Promise<Record<string, boolean>> {
-    const states: Record<string, boolean> = {};
-    for (const tool of AI_TOOLS) {
-      states[tool.value] = await this.isToolConfigured(projectPath, tool.value);
+    // Fresh initialization - no tools configured yet
+    if (!extendMode) {
+      return Object.fromEntries(AI_TOOLS.map(t => [t.value, false]));
     }
-    return states;
+
+    // Extend mode - check all tools in parallel for better performance
+    const entries = await Promise.all(
+      AI_TOOLS.map(async (t) => [t.value, await this.isToolConfigured(projectPath, t.value)] as const)
+    );
+    return Object.fromEntries(entries);
   }
 
   private async isToolConfigured(
     projectPath: string,
     toolId: string
   ): Promise<boolean> {
-    const configFile = ToolRegistry.get(toolId)?.configFileName;
-    if (
-      configFile &&
-      (await FileSystemUtils.fileExists(path.join(projectPath, configFile)))
-    )
-      return true;
+    // A tool is only considered "configured by OpenSpec" if its files contain OpenSpec markers.
+    // For tools with both config files and slash commands, BOTH must have markers.
+    // For slash commands, at least one file with markers is sufficient (not all required).
 
-    const slashConfigurator = SlashCommandRegistry.get(toolId);
-    if (!slashConfigurator) return false;
-    for (const target of slashConfigurator.getTargets()) {
-      const absolute = slashConfigurator.resolveAbsolutePath(
-        projectPath,
-        target.id
-      );
-      if (await FileSystemUtils.fileExists(absolute)) return true;
+    // Helper to check if a file exists and contains OpenSpec markers
+    const fileHasMarkers = async (absolutePath: string): Promise<boolean> => {
+      try {
+        const content = await FileSystemUtils.readFile(absolutePath);
+        return content.includes(OPENSPEC_MARKERS.start) && content.includes(OPENSPEC_MARKERS.end);
+      } catch {
+        return false;
+      }
+    };
+
+    let hasConfigFile = false;
+    let hasSlashCommands = false;
+
+    // Check if the tool has a config file with OpenSpec markers
+    const configFile = ToolRegistry.get(toolId)?.configFileName;
+    if (configFile) {
+      const configPath = path.join(projectPath, configFile);
+      hasConfigFile = (await FileSystemUtils.fileExists(configPath)) && (await fileHasMarkers(configPath));
     }
+
+    // Check if any slash command file exists with OpenSpec markers
+    const slashConfigurator = SlashCommandRegistry.get(toolId);
+    if (slashConfigurator) {
+      for (const target of slashConfigurator.getTargets()) {
+        const absolute = slashConfigurator.resolveAbsolutePath(projectPath, target.id);
+        if ((await FileSystemUtils.fileExists(absolute)) && (await fileHasMarkers(absolute))) {
+          hasSlashCommands = true;
+          break; // At least one file with markers is sufficient
+        }
+      }
+    }
+
+    // Tool is only configured if BOTH exist with markers
+    // OR if the tool has no config file requirement (slash commands only)
+    // OR if the tool has no slash commands requirement (config file only)
+    const hasConfigFileRequirement = configFile !== undefined;
+    const hasSlashCommandRequirement = slashConfigurator !== undefined;
+
+    if (hasConfigFileRequirement && hasSlashCommandRequirement) {
+      // Both are required - both must be present with markers
+      return hasConfigFile && hasSlashCommands;
+    } else if (hasConfigFileRequirement) {
+      // Only config file required
+      return hasConfigFile;
+    } else if (hasSlashCommandRequirement) {
+      // Only slash commands required
+      return hasSlashCommands;
+    }
+
     return false;
   }
 
@@ -719,6 +765,21 @@ export class InitCommand {
     openspecPath: string,
     config: OpenSpecConfig
   ): Promise<void> {
+    await this.writeTemplateFiles(openspecPath, config, false);
+  }
+
+  private async ensureTemplateFiles(
+    openspecPath: string,
+    config: OpenSpecConfig
+  ): Promise<void> {
+    await this.writeTemplateFiles(openspecPath, config, true);
+  }
+
+  private async writeTemplateFiles(
+    openspecPath: string,
+    config: OpenSpecConfig,
+    skipExisting: boolean
+  ): Promise<void> {
     const context: ProjectContext = {
       // Could be enhanced with prompts for project details
     };
@@ -727,6 +788,12 @@ export class InitCommand {
 
     for (const template of templates) {
       const filePath = path.join(openspecPath, template.path);
+
+      // Skip if file exists and we're in skipExisting mode
+      if (skipExisting && (await FileSystemUtils.fileExists(filePath))) {
+        continue;
+      }
+
       const content =
         typeof template.content === 'function'
           ? template.content(context)
